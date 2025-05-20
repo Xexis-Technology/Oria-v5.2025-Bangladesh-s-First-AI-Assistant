@@ -1,0 +1,4016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search | Oria AI Assistant</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Add OpenSearch -->
+    <link rel="search" 
+          type="application/opensearchdescription+xml" 
+          title="Oria Search" 
+          href="opensearch.xml">
+    <!-- Add Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="cb.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="cb.png">
+    <style>
+        /* Add this at the top of your style section */
+        .material-symbols-rounded {
+            font-family: 'Material Symbols Rounded';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            font-feature-settings: "liga";
+        }
+
+        /* Theme variables */
+        :root {
+            --danger-color: #dc2626;
+        }
+
+        [data-theme="dark"] {
+            --danger-color: #ef4444;
+        }
+
+        /* HTTP result title styling */
+        .result-title.http {
+            color: #1d7efd !important; /* Reset title color back to default blue */
+        }
+
+        body.light-theme .result-title.http {
+            color: #1d7efd !important; /* Reset title color back to default blue */
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .search-wrapper.searching {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            min-height: auto;
+            background: var(--primary-color);
+            padding: 12px 20px;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .search-wrapper.searching .search-header {
+            display: none;
+        }
+
+        .search-logo {
+            width: 40px;
+            height: 32px;
+            object-fit: contain;
+            margin-right: 12px;
+        }
+
+        .search-title {
+            font-size: 24px;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .search-form {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 48px;
+            border-radius: 12px;
+            border: none;
+            background: var(--secondary-color);
+            color: var(--text-color);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .search-icon .material-symbols-rounded {
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .search-icon .material-symbols-rounded {
+                font-size: 20px;
+            }
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            display: none;
+        }
+
+        .search-input:valid ~ .clear-search {
+            display: block;
+        }
+
+        .search-content {
+            margin-top: 80px; /* Reduced space for fixed header since we're hiding the logo */
+            padding-top: 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .search-results {
+            margin-top: 0px;
+        }
+
+        .result-item {
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: transform 0.2s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            width: 100%;
+            border-bottom: 2px solid var(--secondary-color);
+            animation: slideIn 0.3s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            border-bottom-color: #1d7efd;
+        }
+
+        .result-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .result-favicon {
+            width: 24px;
+            height: 24px;
+            background-color: white;
+            border-radius: 8px;
+            margin-right: 12px;
+        }
+
+        .result-content {
+            padding: 0 4px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .result-title {
+            color: #1d7efd;
+            font-size: 18px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+        }
+
+        .result-title:hover {
+            text-decoration: underline;
+        }
+
+        .result-title.http {
+            color: #1d7efd !important; /* Reset title color back to default blue */
+        }
+
+        body.light-theme .result-title.http {
+            color: #1d7efd !important; /* Reset title color back to default blue */
+        }
+
+        .result-link {
+            color: var(--subheading-color);
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: block;
+            word-wrap: break-word;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+
+        .result-link.http {
+            color: var(--danger-color) !important;
+        }
+
+        body.light-theme .result-link.http {
+            color: var(--danger-color) !important;
+        }
+
+        .result-snippet {
+            color: var(--text-color);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* Shortcuts Styles */
+        .shortcuts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+            padding: 16px;
+            background: var(--secondary-color);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .shortcuts-container.show {
+            display: grid;
+        }
+
+        .shortcut-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .shortcut-item:hover {
+            background: rgba(29, 126, 253, 0.1);
+        }
+
+        .shortcut-favicon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .shortcut-name {
+            color: var(--text-color);
+            font-size: 13px;
+            text-align: center;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading-indicator.show {
+            display: block;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--secondary-color);
+            border-top: 3px solid #1d7efd;
+            border-radius: 50%;
+            animation: spin 1s linear infinite, fadeIn 0.3s ease-out;
+            margin: 0 auto;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-color);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                padding: 12px;
+            }
+
+            .search-wrapper {
+                padding: 12px;
+                min-height: 90vh; /* Slightly reduced for mobile to account for browser chrome */
+            }
+
+            .search-wrapper.searching {
+                padding: 8px 12px;
+            }
+
+            .search-content {
+                margin-top: 60px;
+            }
+
+            .search-input {
+                padding: 14px 50px;
+                font-size: 15px;
+            }
+
+            .search-logo {
+                width: 32px;
+                height: 26px;
+            }
+
+            .search-title {
+                font-size: 20px;
+            }
+
+            .result-title {
+                font-size: 16px;
+            }
+
+            .result-snippet {
+                font-size: 14px;
+            }
+
+            .shortcuts-container {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 12px;
+                padding: 12px;
+            }
+
+            .shortcut-favicon {
+                width: 28px;
+                height: 28px;
+            }
+
+            .shortcut-name {
+                font-size: 12px;
+            }
+
+            .result-item {
+                padding: 16px;
+                margin-bottom: 12px;
+                border-bottom-width: 1.5px;
+            }
+        }
+
+        .show-more-btn {
+            display: none;
+            margin: 20px auto;
+            padding: 12px 24px;
+            background: var(--secondary-color);
+            color: #1d7efd;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .show-more-btn.show {
+            display: block;
+        }
+
+        .show-more-btn:hover {
+            background: rgba(29, 126, 253, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 126, 253, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .show-more-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #1d7efd;
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .scroll-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top-btn:hover {
+            background: #0264e3;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .scroll-top-btn {
+                bottom: 16px;
+                right: 16px;
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--text-color);
+            border: none;
+            border-radius: 50%;
+            color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            background: #0264e3;
+            transform: translateY(-2px);
+        }
+
+        .back-btn.hide {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+        }
+
+        @media (max-width: 768px) {
+            .back-btn {
+                top: 16px;
+                right: 16px;
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        .history-container {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 320px;
+            height: 100vh;
+            background: var(--primary-color);
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .history-container.show {
+            right: 0;
+        }
+
+        .history-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        .history-title {
+            font-size: 18px;
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .history-close {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .history-close:hover {
+            background: var(--secondary-color);
+        }
+
+        .history-actions {
+            padding: 12px 20px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        .clear-history {
+            background: var(--secondary-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .clear-history:hover {
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .history-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .history-item {
+            padding: 12px;
+            border-radius: 8px;
+            background: var(--secondary-color);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: scaleIn 0.2s ease-out;
+        }
+
+        .history-item:hover {
+            transform: translateX(-4px);
+        }
+
+        .history-item-time {
+            font-size: 12px;
+            color: var(--subheading-color);
+        }
+
+        .history-item-query {
+            color: var(--text-color);
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .history-item-delete {
+            background: none;
+            border: none;
+            color: var(--subheading-color);
+            cursor: pointer;
+            padding: 4px;
+            transition: all 0.2s ease;
+            margin-left: auto;
+        }
+
+        .history-item:hover .history-item-delete {
+            opacity: 1;
+        }
+
+        .history-item-delete:hover {
+            color: #ff4444;
+        }
+
+        .history-empty {
+            text-align: center;
+            color: var(--subheading-color);
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .history-container {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        /* Menu Button Styles */
+        .menu-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #1d7efd;
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-button:hover {
+            background: #0264e3;
+            transform: translateY(-2px);
+        }
+
+        .menu-button.hide {
+            display: none;
+        }
+
+        .menu-items {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 320px;
+            height: 100vh;
+            background: var(--primary-color);
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .menu-items.show {
+            right: 0;
+        }
+
+        .menu-header {
+            position: sticky;
+            top: 0;
+            background: var(--primary-color);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--secondary-color);
+            z-index: 2;
+        }
+
+        .menu-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-close {
+            background: var(--secondary-color);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .menu-close:hover {
+            background: rgba(29, 126, 253, 0.1);
+        }
+
+        .menu-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 12px;
+        }
+
+        .menu-action {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--secondary-color);
+            border: none;
+            border-radius: 12px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-action:hover {
+            background: rgba(29, 126, 253, 0.1);
+            transform: translateX(4px);
+        }
+
+        .menu-action:active {
+            transform: translateX(4px) scale(0.98);
+        }
+
+        .menu-action .material-symbols-rounded {
+            font-size: 24px;
+            color: #1d7efd;
+            min-width: 24px;
+        }
+
+        .menu-action-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .menu-action-title {
+            font-size: 15px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .menu-action-desc {
+            font-size: 13px;
+            color: var(--subheading-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 768px) {
+            .menu-items {
+                width: 100%;
+                right: -100%;
+            }
+
+            .menu-header {
+                padding: 16px;
+            }
+
+            .menu-content {
+                padding: 16px;
+            }
+
+            .menu-grid {
+                gap: 8px;
+            }
+
+            .menu-action {
+                padding: 12px;
+            }
+
+            .menu-action-title {
+                font-size: 14px;
+            }
+
+            .menu-action-desc {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-header {
+                padding: 12px;
+            }
+
+            .menu-content {
+                padding: 12px;
+            }
+
+            .menu-title {
+                font-size: 16px;
+            }
+
+            .menu-action {
+                padding: 10px;
+            }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .menu-items {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+
+        /* Add safe area inset padding for iOS devices */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .menu-items {
+                padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Add Bookmarks Panel Styles */
+        .bookmarks-container {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 320px;
+            height: 100vh;
+            background: var(--primary-color);
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .bookmarks-container.show {
+            right: 0;
+        }
+
+        .bookmarks-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        .bookmarks-title {
+            font-size: 18px;
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bookmarks-close {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .bookmarks-close:hover {
+            background: var(--secondary-color);
+        }
+
+        .bookmarks-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .bookmark-item {
+            padding: 12px;
+            border-radius: 8px;
+            background: var(--secondary-color);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: scaleIn 0.2s ease-out;
+        }
+
+        .bookmark-item:hover {
+            transform: translateX(-4px);
+        }
+
+        .bookmark-favicon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .bookmark-content {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .bookmark-title {
+            color: var(--text-color);
+            font-size: 14px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bookmark-title-text {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bookmark-title-edit {
+            background: none;
+            border: none;
+            color: var(--subheading-color);
+            cursor: pointer;
+            padding: 4px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bookmark-title-edit:hover {
+            color: #1d7efd;
+        }
+
+        .bookmark-title-input {
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 14px;
+            padding: 0;
+            margin: 0;
+            outline: none;
+            border-bottom: 1px solid var(--subheading-color);
+        }
+
+        .bookmark-title-input:focus {
+            border-bottom-color: #1d7efd;
+        }
+
+        .bookmark-url {
+            color: var(--subheading-color);
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bookmark-delete {
+            background: none;
+            border: none;
+            color: var(--subheading-color);
+            cursor: pointer;
+            padding: 4px;
+            transition: all 0.2s ease;
+            margin-left: auto;
+        }
+
+        .bookmark-delete:hover {
+            color: #ff4444;
+        }
+
+        .bookmarks-empty {
+            text-align: center;
+            color: var(--subheading-color);
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .bookmarks-container {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        .bookmark-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            background: var(--secondary-color);
+            width: 32px;
+            height: 32px;
+        }
+        @media (max-width: 768px) {
+            .bookmark-btn {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        .bookmark-btn:hover {
+            background: var(--secondary-color);
+            color: #1d7efd;
+        }
+
+        .bookmark-btn .material-symbols-rounded {
+            font-size: 20px;
+        }
+
+        .bookmark-btn.bookmarked {
+            color: #1d7efd !important;
+        }
+
+        /* Add Animation Keyframes */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        /* Apply animations to elements */
+        .search-wrapper {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .result-item {
+            animation: slideIn 0.3s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .result-item:nth-child(1) { animation-delay: 0.1s; }
+        .result-item:nth-child(2) { animation-delay: 0.15s; }
+        .result-item:nth-child(3) { animation-delay: 0.2s; }
+        .result-item:nth-child(4) { animation-delay: 0.25s; }
+        .result-item:nth-child(5) { animation-delay: 0.3s; }
+        .result-item:nth-child(6) { animation-delay: 0.35s; }
+        .result-item:nth-child(7) { animation-delay: 0.4s; }
+        .result-item:nth-child(8) { animation-delay: 0.45s; }
+        .result-item:nth-child(9) { animation-delay: 0.5s; }
+        .result-item:nth-child(10) { animation-delay: 0.55s; }
+
+        .bookmark-item {
+            animation: scaleIn 0.2s ease-out;
+        }
+
+        .history-item {
+            animation: scaleIn 0.2s ease-out;
+        }
+
+        .menu-items.show {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .history-container.show {
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .bookmarks-container.show {
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .search-input {
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .bookmark-btn {
+            transition: all 0.2s ease;
+        }
+
+        .bookmark-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .bookmark-btn.bookmarked {
+            animation: scaleIn 0.2s ease-out;
+        }
+
+        .loading-spinner {
+            animation: spin 1s linear infinite, fadeIn 0.3s ease-out;
+        }
+
+        .show-more-btn {
+            transition: all 0.3s ease;
+        }
+
+        .show-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 126, 253, 0.1);
+        }
+
+        /* Enhance existing animations */
+        .search-wrapper.searching {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .history-container, .bookmarks-container {
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-top-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Add pulse animation for the search icon when searching */
+        @keyframes pulse {
+            0% {
+                transform: translateY(-50%) scale(1);
+            }
+            50% {
+                transform: translateY(-50%) scale(1.1);
+            }
+            100% {
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+        .searching .search-icon {
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        /* Add wave effect for click interactions */
+        .menu-item, .bookmark-btn, .history-item-delete, .bookmark-delete {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::after, .bookmark-btn::after, .history-item-delete::after, .bookmark-delete::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease-out, height 0.3s ease-out;
+        }
+
+        .menu-item:active::after, .bookmark-btn:active::after, .history-item-delete:active::after, .bookmark-delete:active::after {
+            width: 150%;
+            height: 150%;
+            opacity: 0;
+        }
+
+        /* Analytics Panel Styles */
+        .analytics-container {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 320px;
+            height: 100vh;
+            background: var(--primary-color);
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .analytics-container.show {
+            right: 0;
+        }
+
+        .analytics-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        .analytics-title {
+            font-size: 18px;
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .analytics-close {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .analytics-close:hover {
+            background: var(--secondary-color);
+        }
+
+        .analytics-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .analytics-card {
+            background: var(--secondary-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .analytics-card h4 {
+            margin: 0 0 16px 0;
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .analytics-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 12px;
+            background: var(--primary-color);
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 12px;
+            color: var(--subheading-color);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 20px;
+            color: #1d7efd;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .analytics-container {
+                width: 100%;
+                right: -100%;
+            }
+
+            .analytics-stats {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+
+        .patterns-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .pattern-item {
+            background: var(--primary-color);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pattern-icon {
+            color: #1d7efd;
+            font-size: 24px;
+        }
+
+        .pattern-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pattern-label {
+            font-size: 12px;
+            color: var(--subheading-color);
+        }
+
+        .pattern-value {
+            font-size: 16px;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .trend-up {
+            color: #22c55e;
+        }
+
+        .trend-down {
+            color: #ef4444;
+        }
+
+        .insights-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .insight-item {
+            background: var(--primary-color);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .insight-icon {
+            color: #1d7efd;
+            font-size: 20px;
+        }
+
+        .insight-content {
+            flex: 1;
+        }
+
+        .insight-title {
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 4px;
+        }
+
+        .insight-description {
+            font-size: 12px;
+            color: var(--subheading-color);
+        }
+
+        @media (max-width: 768px) {
+            .patterns-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Add new styles for the enhanced analytics features */
+        .efficiency-meter {
+            height: 24px;
+            background: var(--secondary-color);
+            border-radius: 12px;
+            position: relative;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .efficiency-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #1d7efd);
+            border-radius: 12px;
+            transition: width 0.3s ease;
+        }
+
+        .efficiency-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-color);
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .efficiency-tips {
+            margin-top: 16px;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .trends-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .trend-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: var(--primary-color);
+            border-radius: 8px;
+        }
+
+        .trend-item .material-symbols-rounded {
+            color: #1d7efd;
+            font-size: 20px;
+        }
+
+        .trend-content {
+            flex: 1;
+        }
+
+        .trend-title {
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 4px;
+        }
+
+        .trend-description {
+            font-size: 12px;
+            color: var(--subheading-color);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--primary-color);
+            border-radius: 8px;
+        }
+
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(29, 126, 253, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-icon .material-symbols-rounded {
+            color: #1d7efd;
+            font-size: 24px;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 4px;
+        }
+
+        .category-count {
+            font-size: 12px;
+            color: var(--subheading-color);
+        }
+
+        @media (max-width: 768px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Add Quick Actions Menu */
+        .result-actions {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .result-item:hover .result-actions,
+        .result-item:focus-within .result-actions,
+        .result-item:active .result-actions {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .action-btn {
+            background: var(--secondary-color);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .action-btn:active {
+            background: #1d7efd;
+            color: #fff;
+            transform: scale(0.95);
+        }
+
+        /* Preview Card */
+        .preview-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .preview-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .preview-card {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            width: 90%;
+            max-width: 300px;
+            background: var(--primary-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            padding: 16px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .preview-card.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .preview-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--secondary-color);
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .preview-close:active {
+            background: #1d7efd;
+            color: #fff;
+            transform: scale(0.95);
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 150px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 12px;
+        }
+
+        .preview-card h3 {
+            font-size: 16px;
+            color: var(--text-color);
+            margin: 0 0 8px 0;
+        }
+
+        .preview-card p {
+            font-size: 14px;
+            color: var(--subheading-color);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Share Menu */
+        .share-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .share-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .share-menu {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary-color);
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            z-index: 1000;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .share-menu.show {
+            transform: translateY(0);
+        }
+
+        .share-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .share-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .share-close {
+            background: var(--secondary-color);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .share-close:active {
+            background: #1d7efd;
+            color: #fff;
+            transform: scale(0.95);
+        }
+
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        .share-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--secondary-color);
+            border-radius: 12px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .share-option:active {
+            background: rgba(29, 126, 253, 0.1);
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 768px) {
+            .result-actions {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            
+            .action-btn {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .action-btn span {
+                font-size: 18px;
+            }
+            
+            .share-menu {
+                padding: 16px;
+            }
+            
+            .share-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-card {
+                width: 95%;
+                max-width: none;
+            }
+        }
+
+        /* Add safe area inset padding for iOS devices */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .share-menu {
+                padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Result Meta Info */
+        .result-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--secondary-color);
+            font-size: 13px;
+            color: var(--subheading-color);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trust-score {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .trust-score.high {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .trust-score.medium {
+            background: rgba(234, 179, 8, 0.1);
+            color: #eab308;
+        }
+
+        .trust-score.low {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .trust-score.danger {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        /* Related Searches */
+        .related-searches {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .related-tag {
+            padding: 4px 12px;
+            border-radius: 12px;
+            background: var(--secondary-color);
+            color: var(--text-color);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .related-tag:hover {
+            background: #1d7efd;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .toast {
+                width: 90%;
+                text-align: center;
+            }
+        }
+
+        /* Add this to the style section */
+
+        .result-title.http {
+            color: var(--danger-color) !important;
+        }
+
+        :root {
+            --danger-color: #dc2626;
+        }
+
+        [data-theme="dark"] {
+            --danger-color: #ef4444;
+        }
+
+        /* Learning Filter Menu Styles */
+        .learning-filter-container {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: var(--primary-color);
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            z-index: 1001;
+            transform: translate3d(0, 100%, 0);
+            -webkit-transform: translate3d(0, 100%, 0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .learning-filter-container.show {
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+        }
+
+        .learning-filter-header {
+            position: sticky;
+            top: 0;
+            background: var(--primary-color);
+            padding: 0 0 16px 0;
+            margin: -4px 0 16px 0;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .learning-filter-container {
+                padding: 16px;
+                max-height: 90vh;
+            }
+
+            .filter-section {
+                gap: 12px;
+            }
+
+            .filter-group {
+                padding: 12px;
+            }
+
+            .filter-title {
+                font-size: 15px;
+            }
+
+            .filter-description {
+                font-size: 12px;
+            }
+
+            .toggle-slider {
+                width: 40px;
+                height: 22px;
+            }
+
+            .toggle-slider:before {
+                width: 18px;
+                height: 18px;
+            }
+
+            .filter-toggle input:checked + .toggle-slider:before {
+                transform: translateX(18px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .learning-filter-container {
+                padding: 12px;
+                border-radius: 12px 12px 0 0;
+            }
+
+            .learning-filter-header {
+                padding: 0 0 12px 0;
+                margin: -2px 0 12px 0;
+            }
+
+            .filter-group {
+                padding: 10px;
+                gap: 12px;
+            }
+
+            .filter-title {
+                font-size: 14px;
+            }
+
+            .filter-description {
+                font-size: 11px;
+                line-height: 1.3;
+            }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .learning-filter-container {
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+            }
+        }
+
+        .learning-filter-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .learning-filter-close {
+            background: var(--secondary-color);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .learning-filter-close:hover {
+            background: rgba(29, 126, 253, 0.1);
+        }
+
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--secondary-color);
+            border-radius: 12px;
+        }
+
+        .filter-info {
+            flex: 1;
+        }
+
+        .filter-title {
+            font-size: 16px;
+            color: var(--text-color);
+            margin: 0 0 4px 0;
+            font-weight: 500;
+        }
+
+        .filter-description {
+            font-size: 13px;
+            color: var(--subheading-color);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .filter-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+            padding: 4px;
+        }
+
+        .toggle-slider {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-slider:before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--text-color);
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-toggle input {
+            display: none;
+        }
+
+        .filter-toggle input:checked + .toggle-slider {
+            background: #1d7efd;
+        }
+
+        .filter-toggle input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+            background: #fff;
+        }
+
+        .toggle-label {
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .active-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--secondary-color);
+        }
+
+        .filter-tag {
+            padding: 6px 12px;
+            background: rgba(29, 126, 253, 0.1);
+            color: #1d7efd;
+            border-radius: 16px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .filter-tag .material-symbols-rounded {
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .learning-filter-container {
+                padding: 16px;
+            }
+
+            .filter-section {
+                gap: 12px;
+            }
+        }
+
+        /* Add safe area inset padding for iOS devices */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .learning-filter-container {
+                padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Add PDF badge styles */
+        .pdf-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: rgba(234, 88, 12, 0.1);
+            color: #ea580c;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .pdf-badge .material-symbols-rounded {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <div class="search-wrapper" id="searchWrapper">
+            <div class="search-header">
+                <img src="oria.png" alt="Oria" class="search-logo" id="searchLogo">
+                <h1 class="search-title">Oria Search</h1>
+            </div>
+            <form class="search-form" id="searchForm">
+                <span class="material-symbols-rounded search-icon">search</span>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search anything..." required>
+                <button type="button" class="clear-search material-symbols-rounded" id="clearSearch">close</button>
+            </form>
+        </div>
+        <button class="back-btn" id="backBtn">
+            <span class="material-symbols-rounded">arrow_back</span>
+        </button>
+
+        <div class="search-content">
+            <div style="display: none;" class="shortcuts-container" id="shortcuts"></div>
+            <div class="loading-indicator" id="loadingIndicator">
+                <div class="loading-spinner"></div>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+            <button class="show-more-btn" id="showMoreBtn">Show More Results</button>
+            <button class="scroll-top-btn" id="scrollTopBtn">
+                <span class="material-symbols-rounded">keyboard_arrow_up</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="history-container" id="historyContainer">
+        <div class="history-header">
+            <h3 class="history-title">
+                <span class="material-symbols-rounded">history</span>
+                Search History
+            </h3>
+            <button class="history-close" id="historyClose">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+        <div class="history-actions">
+            <button class="clear-history" id="clearHistory">
+                <span class="material-symbols-rounded">delete</span>
+                Clear All
+            </button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+    </div>
+
+    <div class="menu-items" id="menuItems">
+        <div class="menu-header">
+            <h3 class="menu-title">
+                <span class="material-symbols-rounded">menu</span>
+                Quick Actions
+            </h3>
+            <button class="menu-close" id="menuClose">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+        <div class="menu-content">
+            <div class="menu-grid">
+                <button class="menu-action" id="learnMenuItem">
+                    <span class="material-symbols-rounded">school</span>
+                    <div class="menu-action-info">
+                        <span class="menu-action-title">Learning Filters</span>
+                        <span class="menu-action-desc">Filter content by type</span>
+                    </div>
+                </button>
+                <button class="menu-action" id="historyMenuItem">
+                    <span class="material-symbols-rounded">history</span>
+                    <div class="menu-action-info">
+                        <span class="menu-action-title">Search History</span>
+                        <span class="menu-action-desc">View past searches</span>
+                    </div>
+                </button>
+                <button class="menu-action" id="bookMenuItem">
+                    <span class="material-symbols-rounded">bookmark</span>
+                    <div class="menu-action-info">
+                        <span class="menu-action-title">Bookmarks</span>
+                        <span class="menu-action-desc">Saved results</span>
+                    </div>
+                </button>
+                <button class="menu-action" id="chartMenuItem">
+                    <span class="material-symbols-rounded">bar_chart</span>
+                    <div class="menu-action-info">
+                        <span class="menu-action-title">Analytics</span>
+                        <span class="menu-action-desc">Search insights</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="menu-button" id="menuButton">
+        <span class="material-symbols-rounded">menu</span>
+    </button>
+
+    <!-- Add Bookmarks Panel -->
+    <div class="bookmarks-container" id="bookmarksContainer">
+        <div class="bookmarks-header">
+            <h3 class="bookmarks-title">
+                <span class="material-symbols-rounded">bookmark</span>
+                Bookmarks
+            </h3>
+            <button class="bookmarks-close" id="bookmarksClose">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+        <div class="bookmarks-list" id="bookmarksList"></div>
+    </div>
+
+    <!-- Add Analytics Panel before the script tag -->
+    <div class="analytics-container" id="analyticsContainer">
+        <div class="analytics-header">
+            <h3 class="analytics-title">
+                <span class="material-symbols-rounded">bar_chart</span>
+                Search Analytics
+            </h3>
+            <button class="analytics-close" id="analyticsClose">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+        <div class="analytics-content">
+            <div class="analytics-card">
+                <h4>Search Patterns</h4>
+                <div class="patterns-grid">
+                    <div class="pattern-item">
+                        <span class="pattern-icon material-symbols-rounded">schedule</span>
+                        <div class="pattern-info">
+                            <span class="pattern-label">Peak Activity Time</span>
+                            <span class="pattern-value" id="peakTime">--:--</span>
+                        </div>
+                    </div>
+                    <div class="pattern-item">
+                        <span class="pattern-icon material-symbols-rounded">speed</span>
+                        <div class="pattern-info">
+                            <span class="pattern-label">Avg. Search Time</span>
+                            <span class="pattern-value" id="avgSearchTime">-- sec</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <h4>Search Activity</h4>
+                <div class="analytics-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Searches</span>
+                        <span class="stat-value" id="totalSearches">0</span>
+                        <span class="stat-trend" id="searchesTrend"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Bookmarked Sites</span>
+                        <span class="stat-value" id="totalBookmarks">0</span>
+                        <span class="stat-trend" id="bookmarksTrend"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Clicked Results</span>
+                        <span class="stat-value" id="totalClicks">0</span>
+                        <span class="stat-trend" id="clicksTrend"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <h4>Recent Insights</h4>
+                <div class="insights-list" id="insightsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Learning Filter Menu before the script tag -->
+    <div class="learning-filter-container" id="learningFilterContainer">
+        <div class="learning-filter-header">
+            <h3 class="learning-filter-title">
+                <span class="material-symbols-rounded">school</span>
+                Learning Filters
+            </h3>
+            <button class="learning-filter-close" id="learningFilterClose">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+        <div class="learning-filter-content">
+            <div class="filter-section">
+                <div class="filter-group">
+                    <div class="filter-info">
+                        <h4 class="filter-title">Show All Content</h4>
+                        <p class="filter-description">Display all search results without any content filtering</p>
+                    </div>
+                    <label class="filter-toggle">
+                        <input type="checkbox" id="showAllContent" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-info">
+                        <h4 class="filter-title">Articles & Blogs</h4>
+                        <p class="filter-description">Find written content, blog posts, and in-depth articles</p>
+                    </div>
+                    <label class="filter-toggle">
+                        <input type="checkbox" id="showArticles">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-info">
+                        <h4 class="filter-title">Video Tutorials</h4>
+                        <p class="filter-description">Watch video lessons, demonstrations, and how-to guides</p>
+                    </div>
+                    <label class="filter-toggle">
+                        <input type="checkbox" id="showVideos">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-info">
+                        <h4 class="filter-title">Online Courses</h4>
+                        <p class="filter-description">Access structured learning paths and complete courses</p>
+                    </div>
+                    <label class="filter-toggle">
+                        <input type="checkbox" id="showCourses">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-info">
+                        <h4 class="filter-title">Documentation</h4>
+                        <p class="filter-description">Browse technical docs, references, guides, and PDF documents</p>
+                    </div>
+                    <label class="filter-toggle">
+                        <input type="checkbox" id="showDocs">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="active-filters" id="activeFilters"></div>
+        </div>
+    </div>
+
+    <script>
+        class GoogleSearch {
+            constructor() {
+                this.apiKey = 'AIzaSyCqwb1Px6Va-ddRzURvD_TNJZpaf9Q9c3k';
+                this.searchEngineId = '47c56b838fb644ffb';
+                this.shortcuts = JSON.parse(localStorage.getItem('searchShortcuts') || '[]');
+                this.currentPage = 1;
+                this.currentQuery = '';
+                this.isLoading = false;
+                this.searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+                this.bookmarks = JSON.parse(localStorage.getItem('searchBookmarks') || '[]');
+                this.menuButton = document.getElementById('menuButton');
+                this.menuItems = document.getElementById('menuItems');
+                this.bookMenuItem = document.getElementById('bookMenuItem');
+                this.chartMenuItem = document.getElementById('chartMenuItem');
+                this.historyMenuItem = document.getElementById('historyMenuItem');
+                this.learnMenuItem = document.getElementById('learnMenuItem');
+                this.bookmarksContainer = document.getElementById('bookmarksContainer');
+                this.bookmarksClose = document.getElementById('bookmarksClose');
+                this.bookmarksList = document.getElementById('bookmarksList');
+                this.clearHistoryBtn = document.getElementById('clearHistory');
+                this.analyticsContainer = document.getElementById('analyticsContainer');
+                this.analyticsClose = document.getElementById('analyticsClose');
+                this.learningFilterContainer = document.getElementById('learningFilterContainer');
+                this.learningFilterClose = document.getElementById('learningFilterClose');
+                this.activeFilters = document.getElementById('activeFilters');
+                this.contentFilters = {
+                    all: true,
+                    articles: false,
+                    videos: false,
+                    courses: false,
+                    docs: false
+                };
+                this.init();
+                this.handleURLParameters();
+            }
+
+            init() {
+                this.searchForm = document.getElementById('searchForm');
+                this.searchInput = document.getElementById('searchInput');
+                this.clearSearchBtn = document.getElementById('clearSearch');
+                this.searchResults = document.getElementById('searchResults');
+                this.loadingIndicator = document.getElementById('loadingIndicator');
+                this.searchLogo = document.getElementById('searchLogo');
+                this.shortcutsContainer = document.getElementById('shortcuts');
+                this.searchWrapper = document.getElementById('searchWrapper');
+                this.showMoreBtn = document.getElementById('showMoreBtn');
+                this.scrollTopBtn = document.getElementById('scrollTopBtn');
+                this.backBtn = document.getElementById('backBtn');
+                this.historyContainer = document.getElementById('historyContainer');
+                this.historyClose = document.getElementById('historyClose');
+                this.historyList = document.getElementById('historyList');
+                this.clearHistoryBtn = document.getElementById('clearHistory');
+                this.bookmarksContainer = document.getElementById('bookmarksContainer');
+                this.bookmarksClose = document.getElementById('bookmarksClose');
+                this.bookmarksList = document.getElementById('bookmarksList');
+                this.analyticsContainer = document.getElementById('analyticsContainer');
+                this.analyticsClose = document.getElementById('analyticsClose');
+
+                this.setupEventListeners();
+                this.updateTheme();
+                this.displayShortcuts();
+                this.displayHistory();
+                this.displayBookmarks();
+                this.setupMenuEventListeners();
+            }
+
+            setupEventListeners() {
+                this.searchForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.performSearch();
+                });
+
+                this.searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.performSearch();
+                    }
+                });
+
+                this.clearSearchBtn.addEventListener('click', () => {
+                    this.searchInput.value = '';
+                    this.searchInput.focus();
+                    this.searchWrapper.classList.remove('searching');
+                    this.searchResults.innerHTML = '';
+                    this.showMoreBtn.classList.remove('show');
+                    this.currentPage = 1;
+                    this.currentQuery = '';
+                    this.shortcutsContainer.classList.add('show');
+                    this.backBtn.classList.remove('hide');
+                    this.menuButton.classList.remove('hide');
+                    // Reset the page title to default
+                    document.title = 'Search | Oria AI Assistant';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+
+                this.backBtn.addEventListener('click', () => {
+                    history.back();
+                });
+
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 200) {
+                        this.scrollTopBtn.classList.add('show');
+                        this.menuButton.classList.add('hide');
+                    } else {
+                        this.scrollTopBtn.classList.remove('show');
+                        this.menuButton.classList.remove('hide');
+                    }
+
+                    if (this.searchResults.innerHTML !== '') {
+                        this.searchWrapper.classList.add('searching');
+                        this.backBtn.classList.add('hide');
+                    } else if (window.scrollY === 0) {
+                        this.searchWrapper.classList.remove('searching');
+                        this.backBtn.classList.remove('hide');
+                    }
+                });
+
+                this.showMoreBtn.addEventListener('click', () => {
+                    if (!this.isLoading) {
+                        this.loadMoreResults();
+                    }
+                });
+
+                this.scrollTopBtn.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+
+                this.historyClose.addEventListener('click', () => {
+                    this.historyContainer.classList.remove('show');
+                });
+
+                this.clearHistoryBtn.addEventListener('click', () => {
+                    this.clearHistory();
+                });
+
+                this.bookmarksClose.addEventListener('click', () => {
+                    this.bookmarksContainer.classList.remove('show');
+                });
+
+                this.analyticsClose.addEventListener('click', () => {
+                    this.analyticsContainer.classList.remove('show');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (this.historyContainer.classList.contains('show') && 
+                        !this.historyContainer.contains(e.target) && 
+                        !e.target.closest('#historyMenuItem')) {
+                        this.historyContainer.classList.remove('show');
+                    }
+                    if (this.bookmarksContainer.classList.contains('show') && 
+                        !this.bookmarksContainer.contains(e.target) && 
+                        !e.target.closest('#bookMenuItem')) {
+                        this.bookmarksContainer.classList.remove('show');
+                    }
+                });
+
+                this.learningFilterClose.addEventListener('click', () => {
+                    this.learningFilterContainer.classList.remove('show');
+                });
+
+                // Set up filter toggle listeners
+                document.getElementById('showAllContent').addEventListener('change', (e) => {
+                    this.contentFilters.all = e.target.checked;
+                    if (e.target.checked) {
+                        this.disableIndividualFilters();
+                    } else {
+                        this.enableIndividualFilters();
+                    }
+                    this.updateActiveFilters();
+                    if (this.currentQuery) {
+                        this.performSearch();
+                    }
+                });
+
+                const filterIds = {
+                    'showArticles': 'articles',
+                    'showVideos': 'videos',
+                    'showCourses': 'courses',
+                    'showDocs': 'docs'
+                };
+
+                Object.entries(filterIds).forEach(([id, filterKey]) => {
+                    document.getElementById(id).addEventListener('change', (e) => {
+                        // When any individual filter is toggled on, turn off "Show All Content"
+                        if (e.target.checked) {
+                            const showAllCheckbox = document.getElementById('showAllContent');
+                            if (showAllCheckbox.checked) {
+                                showAllCheckbox.checked = false;
+                                this.contentFilters.all = false;
+                                this.enableIndividualFilters();
+                            }
+                        }
+                        
+                        this.contentFilters[filterKey] = e.target.checked;
+                        this.updateActiveFilters();
+                        if (this.currentQuery) {
+                            this.performSearch();
+                        }
+                    });
+                });
+            }
+
+            setupMenuEventListeners() {
+                this.menuButton.addEventListener('click', () => {
+                    this.menuItems.classList.add('show');
+                });
+
+                document.getElementById('menuClose').addEventListener('click', () => {
+                    this.menuItems.classList.remove('show');
+                });
+
+                this.learnMenuItem.addEventListener('click', () => {
+                    this.learningFilterContainer.classList.add('show');
+                    this.menuItems.classList.remove('show');
+                });
+
+                this.historyMenuItem.addEventListener('click', () => {
+                    this.historyContainer.classList.add('show');
+                    this.menuItems.classList.remove('show');
+                });
+
+                this.bookMenuItem.addEventListener('click', () => {
+                    this.bookmarksContainer.classList.add('show');
+                    this.menuItems.classList.remove('show');
+                });
+
+                this.chartMenuItem.addEventListener('click', () => {
+                    this.analyticsContainer.classList.add('show');
+                    this.menuItems.classList.remove('show');
+                    this.updateAnalytics();
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!this.menuButton.contains(e.target) && 
+                        !this.menuItems.contains(e.target) && 
+                        this.menuItems.classList.contains('show')) {
+                        this.menuItems.classList.remove('show');
+                    }
+                });
+            }
+
+            addShortcut(title, link, favicon) {
+                if (this.shortcuts.length >= 12) {
+                    this.shortcuts.pop();
+                }
+
+                const exists = this.shortcuts.some(s => s.link === link);
+                if (!exists) {
+                    this.shortcuts.unshift({ title, link, favicon });
+                    localStorage.setItem('searchShortcuts', JSON.stringify(this.shortcuts));
+                    this.displayShortcuts();
+                }
+            }
+
+            displayShortcuts() {
+                if (this.shortcuts.length === 0) {
+                    this.shortcutsContainer.classList.remove('show');
+                    return;
+                }
+
+                this.shortcutsContainer.classList.add('show');
+                this.shortcutsContainer.innerHTML = this.shortcuts.map(shortcut => `
+                    <a href="${shortcut.link}" class="shortcut-item" target="_blank">
+                        <img src="${shortcut.favicon}" alt="" class="shortcut-favicon">
+                        <span class="shortcut-name">${this.truncateTitle(shortcut.title)}</span>
+                    </a>
+                `).join('');
+            }
+
+            truncateTitle(title) {
+                return title.length > 20 ? title.substring(0, 20) + '...' : title;
+            }
+
+            async performSearch() {
+                const query = this.searchInput.value.trim();
+                if (!query) return;
+
+                // Update the page title with the search query
+                document.title = `Oria Search | ${query}`;
+
+                this.addToHistory(query);
+                this.currentQuery = query;
+                this.currentPage = 1;
+                this.searchWrapper.classList.add('searching');
+                this.backBtn.classList.add('hide');
+                this.showLoading();
+                this.showMoreBtn.classList.remove('show');
+
+                try {
+                    const results = await this.fetchSearchResults(query);
+                    this.displayResults(results, true);
+                    if (results.length === 10) {
+                        this.showMoreBtn.classList.add('show');
+                    }
+                } catch (error) {
+                    console.error('Search error:', error);
+                    this.displayError();
+                }
+
+                this.hideLoading();
+            }
+
+            async loadMoreResults() {
+                if (this.isLoading) return;
+
+                this.showLoading();
+                this.currentPage++;
+                
+                try {
+                    const results = await this.fetchSearchResults(this.currentQuery);
+                    this.displayResults(results, false);
+                    
+                    if (results.length < 10) {
+                        this.showMoreBtn.classList.remove('show');
+                    }
+                } catch (error) {
+                    console.error('Error loading more results:', error);
+                    this.currentPage--;
+                }
+
+                this.hideLoading();
+            }
+
+            async fetchSearchResults(query) {
+                const startIndex = ((this.currentPage - 1) * 10) + 1;
+                let searchQuery = query;
+
+                // Add content type filters to the search query
+                if (!this.contentFilters.all) {
+                    const activeFilters = [];
+                    if (this.contentFilters.articles) activeFilters.push('(blog OR article OR post)');
+                    if (this.contentFilters.videos) activeFilters.push('(video OR tutorial OR youtube)');
+                    if (this.contentFilters.courses) activeFilters.push('(course OR learn OR training)');
+                    if (this.contentFilters.docs) activeFilters.push('(documentation OR docs OR reference OR guide OR pdf OR filetype:pdf)');
+
+                    if (activeFilters.length > 0) {
+                        searchQuery = `${query} (${activeFilters.join(' OR ')})`;
+                    }
+                }
+
+                const url = `https://www.googleapis.com/customsearch/v1?key=${this.apiKey}&cx=${this.searchEngineId}&q=${encodeURIComponent(searchQuery)}&start=${startIndex}`;
+                
+                this.isLoading = true;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error('Search request failed');
+                    
+                    const data = await response.json();
+                    return data.items || [];
+                } finally {
+                    this.isLoading = false;
+                }
+            }
+
+            getFaviconUrl(link) {
+                try {
+                    const url = new URL(link);
+                    return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=32`;
+                } catch (e) {
+                    return 'default-favicon.png';
+                }
+            }
+
+            displayResults(results, clearExisting = true) {
+                if (results.length === 0 && clearExisting) {
+                    this.searchResults.innerHTML = `
+                        <div class="no-results">
+                            <p>No results found</p>
+                        </div>
+                    `;
+                    this.showMoreBtn.classList.remove('show');
+                    return;
+                }
+
+                // Create preview and share overlays if they don't exist
+                if (!document.querySelector('.preview-overlay')) {
+                    const previewOverlay = document.createElement('div');
+                    previewOverlay.className = 'preview-overlay';
+                    document.body.appendChild(previewOverlay);
+                    
+                    const shareOverlay = document.createElement('div');
+                    shareOverlay.className = 'share-overlay';
+                    document.body.appendChild(shareOverlay);
+                }
+
+                const resultsHTML = results.map(result => {
+                    const isBookmarked = this.bookmarks.some(b => b.url === result.link);
+                    const readingTime = this.calculateReadingTime(result.snippet);
+                    const trustScore = this.calculateTrustScore(result.link);
+                    const relatedSearches = this.generateRelatedSearches(result.title, result.snippet);
+                    const isHttp = result.link.startsWith('http:');
+                    
+                    return `
+                    <div class="result-item">
+                        <div class="result-top">
+                            <img src="${this.getFaviconUrl(result.link)}" alt="" class="result-favicon">
+                            <div class="result-actions">
+                                <button class="action-btn preview-btn" title="Quick Preview" onclick="search.showPreview(event, '${result.link}', '${result.title.replace(/'/g, "\\'")}', '${result.snippet.replace(/'/g, "\\'")}')">
+                                    <span class="material-symbols-rounded">visibility</span>
+                                </button>
+                                <button class="action-btn share-btn" title="Share" onclick="search.showShareMenu(event, '${result.link}', '${result.title.replace(/'/g, "\\'")}')">
+                                    <span class="material-symbols-rounded">share</span>
+                                </button>
+                                <button class="bookmark-btn ${isBookmarked ? 'bookmarked' : ''}" onclick="search.handleBookmarkClick(event, '${result.title.replace(/'/g, "\\'")}', '${result.link}', '${this.getFaviconUrl(result.link)}')">
+                                    <span class="material-symbols-rounded">${isBookmarked ? 'bookmark_added' : 'bookmark_add'}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="result-content">
+                            <a href="${result.link}" class="result-title" target="_blank" 
+                               onclick="search.handleLinkClick(event, '${result.title.replace(/'/g, "\\'")}', '${result.link}', '${this.getFaviconUrl(result.link)}')">${result.title}</a>
+                            <span class="result-link ${isHttp ? 'http' : ''}">${result.link}</span>
+                            <p class="result-snippet">${result.snippet}</p>
+                            
+                            <div class="result-meta">
+                                <div class="meta-item">
+                                    <span class="material-symbols-rounded">schedule</span>
+                                    ${readingTime} min read
+                                </div>
+                                <div class="meta-item">
+                                    <span class="material-symbols-rounded">
+                                        ${trustScore.isSecure ? 
+                                            (trustScore.score >= 85 ? 'verified' : 
+                                             trustScore.score >= 70 ? 'security' : 
+                                             'warning') : 
+                                            'gpp_bad'}
+                                    </span>
+                                    <span class="trust-score ${trustScore.class}">
+                                        ${trustScore.score}% trusted${!trustScore.isSecure ? ' (HTTP)' : ''}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="related-searches">
+                                ${relatedSearches.map(term => `
+                                    <span class="related-tag" onclick="search.searchRelated('${term.replace(/'/g, "\\'")}')">
+                                        ${term}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                if (clearExisting) {
+                    this.searchResults.innerHTML = resultsHTML;
+                } else {
+                    this.searchResults.insertAdjacentHTML('beforeend', resultsHTML);
+                }
+
+                this.menuButton.classList.add('hide');
+            }
+
+            calculateReadingTime(text) {
+                const wordsPerMinute = 200;
+                const words = text.trim().split(/\s+/).length;
+                return Math.max(1, Math.ceil(words / wordsPerMinute));
+            }
+
+            calculateTrustScore(url) {
+                try {
+                    const urlObj = new URL(url);
+                    const domain = urlObj.hostname.toLowerCase();
+                    const isSecure = urlObj.protocol === 'https:';
+                    
+                    // Base score for all domains
+                    let score = isSecure ? 70 : 40; // Significantly lower base score for HTTP
+                    
+                    // Major trusted domains
+                    const trustedDomains = {
+                        'google.com': 30,
+                        'bappi5.netlify.app': 30,
+                        'youtube.com': 30,
+                        'microsoft.com': 30,
+                        'facebook.com': 25,
+                        'linkedin.com': 25,
+                        'github.com': 25,
+                        'apple.com': 30,
+                        'amazon.com': 25,
+                        'wikipedia.org': 25,
+                        'twitter.com': 25,
+                        'instagram.com': 25,
+                        'netflix.com': 25,
+                        'spotify.com': 25,
+                        'adobe.com': 25,
+                        'oracle.com': 25,
+                        'ibm.com': 25,
+                        'intel.com': 25,
+                        'cisco.com': 25,
+                        'salesforce.com': 25,
+                        'slack.com': 25,
+                        'zoom.us': 25,
+                        'dropbox.com': 25,
+                        'wordpress.org': 25,
+                        'medium.com': 20,
+                        'stackoverflow.com': 20,
+                        'github.io': 20,
+                        'gitlab.com': 20,
+                        'reddit.com': 20,
+                        'bitbucket.org': 20,
+                        'dev.to': 20,
+                        'codepen.io': 20
+                    };
+                    
+                    // Check for trusted domains (including subdomains)
+                    for (const [trustedDomain, bonus] of Object.entries(trustedDomains)) {
+                        if (domain.endsWith(trustedDomain)) {
+                            score += isSecure ? bonus : Math.floor(bonus / 2); // Reduce bonus for HTTP
+                            break;
+                        }
+                    }
+                    
+                    // Add points for domain extensions
+                    if (domain.endsWith('.gov')) score += isSecure ? 25 : 15;
+                    else if (domain.endsWith('.edu')) score += isSecure ? 20 : 12;
+                    else if (domain.endsWith('.org')) score += isSecure ? 15 : 9;
+                    else if (domain.endsWith('.com')) score += isSecure ? 20 : 15;
+                    else if (domain.endsWith('.net')) score += isSecure ? 10 : 6;
+                    else if (domain.endsWith('.io')) score += isSecure ? 10 : 6;
+                    else if (domain.endsWith('.ai')) score += isSecure ? 10 : 6;
+                    else if (domain.endsWith('.dev')) score += isSecure ? 10 : 6;
+                    else if (domain.endsWith('.mil')) score += isSecure ? 25 : 15;
+                    else if (domain.endsWith('.int')) score += isSecure ? 20 : 12;
+                    else if (domain.endsWith('.edu.au')) score += isSecure ? 20 : 12;
+                    else if (domain.endsWith('.ac.uk')) score += isSecure ? 20 : 12;
+                    else if (domain.endsWith('.edu.sg')) score += isSecure ? 20 : 12;
+                    else if (domain.endsWith('.ac.jp')) score += isSecure ? 20 : 12;
+                    else if (domain.endsWith('bappi5.netlify.app')) score += isSecure ? 20 : 12;
+                    // Limit score to 100
+                    score = Math.min(100, score);
+                    
+                    return {
+                        score,
+                        class: isSecure ? 
+                            (score >= 85 ? 'high' : score >= 70 ? 'medium' : 'low') : 
+                            'danger',
+                        isSecure
+                    };
+                } catch (e) {
+                    return { score: 40, class: 'danger', isSecure: false };
+                }
+            }
+
+            generateRelatedSearches(title, snippet) {
+                const text = `${title} ${snippet}`;
+                const words = text.toLowerCase().split(/\s+/);
+                const keywords = words.filter(word => 
+                    word.length > 4 && 
+                    !['https', 'http', 'www'].includes(word)
+                );
+                
+                // Get unique keywords
+                const unique = [...new Set(keywords)];
+                
+                // Return up to 3 random keywords
+                return unique
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 3);
+            }
+
+            truncateSnippet(text, length) {
+                return text.length > length ? text.substring(0, length) + '...' : text;
+            }
+
+            toggleShareMenu(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                // Close any other open share menus
+                document.querySelectorAll('.share-menu.show').forEach(menu => {
+                    if (menu !== event.target.nextElementSibling) {
+                        menu.classList.remove('show');
+                    }
+                });
+                
+                const shareMenu = event.target.closest('.result-actions').nextElementSibling.nextElementSibling.querySelector('.share-menu');
+                shareMenu.classList.toggle('show');
+                
+                // Close menu when clicking outside
+                const closeMenu = (e) => {
+                    if (!shareMenu.contains(e.target) && !event.target.contains(e.target)) {
+                        shareMenu.classList.remove('show');
+                        document.removeEventListener('click', closeMenu);
+                    }
+                };
+                
+                document.addEventListener('click', closeMenu);
+            }
+
+            shareResult(platform, url, title = '') {
+                switch (platform) {
+                    case 'copy':
+                        if (navigator.clipboard && window.isSecureContext) {
+                            navigator.clipboard.writeText(url).then(() => {
+                                this.showToast('Link copied to clipboard!');
+                            });
+                        } else {
+                            this.copyTextFallback(url);
+                        }
+                        break;
+                    case 'twitter':
+                        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`, '_blank');
+                        break;
+                    case 'facebook':
+                        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                        break;
+                    case 'email':
+                        window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+                        break;
+                    case 'whatsapp':
+                        window.open(`whatsapp://send?text=${encodeURIComponent(title + ' ' + url)}`, '_blank');
+                        break;
+                }
+                this.closeShareMenu();
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('show');
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }, 2000);
+                }, 100);
+            }
+
+            searchRelated(term) {
+                this.searchInput.value = term;
+                this.performSearch();
+            }
+
+            showLoading() {
+                this.isLoading = true;
+                this.loadingIndicator.classList.add('show');
+                this.showMoreBtn.style.opacity = '0.5';
+                this.showMoreBtn.disabled = true;
+            }
+
+            hideLoading() {
+                this.isLoading = false;
+                this.loadingIndicator.classList.remove('show');
+                this.showMoreBtn.style.opacity = '1';
+                this.showMoreBtn.disabled = false;
+            }
+
+            displayError() {
+                this.searchResults.innerHTML = `
+                    <div class="no-results">
+                        <p>An error occurred while searching. Please try again.</p>
+                    </div>
+                `;
+            }
+
+            updateTheme() {
+                const isLightTheme = localStorage.getItem("themeColor") === "light_mode";
+                document.body.classList.toggle("light-theme", isLightTheme);
+                this.searchLogo.src = isLightTheme ? "oria1.png" : "oria.png";
+            }
+
+            addToHistory(query, siteInfo = null) {
+                const timestamp = new Date().toISOString();
+                const historyItem = {
+                    query,
+                    timestamp,
+                    siteInfo // This will store site info if clicked
+                };
+                this.searchHistory.unshift(historyItem);
+                
+                if (this.searchHistory.length > 50) {
+                    this.searchHistory.pop();
+                }
+                
+                localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
+                this.displayHistory();
+            }
+
+            displayHistory() {
+                if (this.searchHistory.length === 0) {
+                    this.historyList.innerHTML = `
+                        <div class="history-empty">
+                            <p>No search history yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                this.historyList.innerHTML = this.searchHistory.map((item, index) => {
+                    const timeStr = this.formatTime(item.timestamp);
+                    let historyContent = `
+                        <div class="history-item" data-query="${item.query}">
+                            <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                                <span class="history-item-time">${timeStr}</span>
+                                <span class="history-item-query">${item.query}</span>`;
+
+                    // Add site info if available
+                    if (item.siteInfo) {
+                        historyContent += `
+                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--secondary-color);">
+                                <img src="${item.siteInfo.favicon}" alt="" style="width: 16px; height: 16px;">
+                                <a href="${item.siteInfo.link}" target="_blank" style="color: #1d7efd; font-size: 12px; text-decoration: none; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    ${item.siteInfo.title}
+                                </a>
+                            </div>`;
+                    }
+
+                    historyContent += `
+                            </div>
+                            <button class="history-item-delete" data-index="${index}">
+                                <span class="material-symbols-rounded">close</span>
+                            </button>
+                        </div>`;
+
+                    return historyContent;
+                }).join('');
+
+                this.historyList.querySelectorAll('.history-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        if (!e.target.closest('.history-item-delete')) {
+                            const query = item.dataset.query;
+                            this.searchInput.value = query;
+                            this.historyContainer.classList.remove('show');
+                            this.performSearch();
+                        }
+                    });
+                });
+
+                this.historyList.querySelectorAll('.history-item-delete').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const index = parseInt(btn.dataset.index);
+                        this.deleteHistoryItem(index);
+                    });
+                });
+            }
+
+            deleteHistoryItem(index) {
+                this.searchHistory.splice(index, 1);
+                localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
+                this.displayHistory();
+            }
+
+            clearHistory() {
+                this.searchHistory = [];
+                localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
+                this.displayHistory();
+            }
+
+            formatTime(timestamp) {
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diff = now - date;
+                
+                const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const dateStr = date.toLocaleDateString([], { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: now.getFullYear() !== date.getFullYear() ? 'numeric' : undefined
+                });
+                
+                if (diff < 24 * 60 * 60 * 1000) {
+                    return `Today at ${timeStr}`;
+                }
+                if (diff < 48 * 60 * 60 * 1000) {
+                    return `Yesterday at ${timeStr}`;
+                }
+                return `${dateStr} at ${timeStr}`;
+            }
+
+            handleLinkClick(event, title, link, favicon) {
+                // Update history with site info
+                const siteInfo = { title, link, favicon };
+                this.addToHistory(this.currentQuery, siteInfo);
+            }
+
+            addBookmark(title, url, favicon) {
+                const exists = this.bookmarks.some(b => b.url === url);
+                if (!exists) {
+                    this.bookmarks.unshift({ title, url, favicon });
+                    localStorage.setItem('searchBookmarks', JSON.stringify(this.bookmarks));
+                    this.displayBookmarks();
+                    return true;
+                }
+                return false;
+            }
+
+            displayBookmarks() {
+                if (this.bookmarks.length === 0) {
+                    this.bookmarksList.innerHTML = `
+                        <div class="bookmarks-empty">
+                            <p>No bookmarks yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                this.bookmarksList.innerHTML = this.bookmarks.map((bookmark, index) => `
+                    <div class="bookmark-item">
+                        <img src="${bookmark.favicon}" alt="" class="bookmark-favicon">
+                        <div class="bookmark-content">
+                            <div class="bookmark-title">
+                                <span class="bookmark-title-text">${bookmark.title}</span>
+                                <button class="bookmark-title-edit" data-index="${index}">
+                                    <span class="material-symbols-rounded">edit</span>
+                                </button>
+                            </div>
+                            <div class="bookmark-url">${bookmark.url}</div>
+                        </div>
+                        <button class="bookmark-delete" data-index="${index}">
+                            <span class="material-symbols-rounded">close</span>
+                        </button>
+                    </div>
+                `).join('');
+
+                this.bookmarksList.querySelectorAll('.bookmark-item').forEach(item => {
+                    const deleteBtn = item.querySelector('.bookmark-delete');
+                    const editBtn = item.querySelector('.bookmark-title-edit');
+                    const titleText = item.querySelector('.bookmark-title-text');
+
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const index = parseInt(deleteBtn.dataset.index);
+                        this.deleteBookmark(index);
+                    });
+
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const index = parseInt(editBtn.dataset.index);
+                        const currentTitle = titleText.textContent;
+                        
+                        // Create input element
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = currentTitle;
+                        input.className = 'bookmark-title-input';
+                        
+                        // Replace text with input
+                        titleText.replaceWith(input);
+                        input.focus();
+                        
+                        // Change edit icon to done icon
+                        editBtn.querySelector('.material-symbols-rounded').textContent = 'done';
+                        editBtn.style.color = '#1d7efd';
+                        
+                        // Handle input events
+                        const handleSave = () => {
+                            const newTitle = input.value.trim();
+                            if (newTitle) {
+                                this.bookmarks[index].title = newTitle;
+                                localStorage.setItem('searchBookmarks', JSON.stringify(this.bookmarks));
+                                this.displayBookmarks();
+                            }
+                        };
+                        
+                        // Add click handler for done button
+                        const handleDoneClick = (e) => {
+                            e.stopPropagation();
+                            input.blur();
+                            editBtn.removeEventListener('click', handleDoneClick);
+                        };
+                        
+                        // Replace the edit button click handler with done button handler
+                        editBtn.removeEventListener('click', editBtn.onclick);
+                        editBtn.addEventListener('click', handleDoneClick);
+                        
+                        input.addEventListener('blur', () => {
+                            handleSave();
+                            // Reset edit button icon
+                            editBtn.querySelector('.material-symbols-rounded').textContent = 'edit';
+                            editBtn.style.color = 'var(--subheading-color)';
+                        });
+                        
+                        input.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                input.blur();
+                            }
+                        });
+                    });
+
+                    item.addEventListener('click', (e) => {
+                        if (!e.target.closest('.bookmark-delete') && !e.target.closest('.bookmark-title-edit') && !e.target.closest('.bookmark-title-input')) {
+                            const url = this.bookmarks[parseInt(deleteBtn.dataset.index)].url;
+                            window.open(url, '_blank');
+                        }
+                    });
+                });
+            }
+
+            deleteBookmark(index) {
+                this.bookmarks.splice(index, 1);
+                localStorage.setItem('searchBookmarks', JSON.stringify(this.bookmarks));
+                this.displayBookmarks();
+            }
+
+            handleBookmarkClick(event, title, url, favicon) {
+                event.preventDefault();
+                event.stopPropagation();
+                const button = event.currentTarget;
+                const exists = this.bookmarks.some(b => b.url === url);
+                
+                if (exists) {
+                    // Remove bookmark
+                    this.bookmarks = this.bookmarks.filter(b => b.url !== url);
+                    button.innerHTML = '<span class="material-symbols-rounded">bookmark_add</span>';
+                    button.style.color = 'var(--subheading-color)';
+                    button.classList.remove('bookmarked');
+                } else {
+                    // Add bookmark
+                    this.bookmarks.unshift({ title, url, favicon });
+                    button.innerHTML = '<span class="material-symbols-rounded">bookmark_added</span>';
+                    button.style.color = '#1d7efd';
+                    button.classList.add('bookmarked');
+                }
+                
+                localStorage.setItem('searchBookmarks', JSON.stringify(this.bookmarks));
+                this.displayBookmarks();
+            }
+
+            handleURLParameters() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchQuery = urlParams.get('prompt');
+                
+                if (searchQuery) {
+                    this.searchInput.value = decodeURIComponent(searchQuery);
+                    this.performSearch();
+                }
+            }
+
+            updateAnalytics() {
+                this.updateStats();
+                this.updatePatterns();
+                this.updateInsights();
+                this.updateSearchEfficiency();
+                this.updateSearchTrends();
+                this.updateCategoryAnalysis();
+            }
+
+            updateStats() {
+                const totalSearches = this.searchHistory.length;
+                const totalBookmarks = this.bookmarks.length;
+                const totalClicks = this.searchHistory.filter(item => item.siteInfo).length;
+
+                // Calculate trends (comparing with previous day)
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                const todaySearches = this.searchHistory.filter(item => 
+                    new Date(item.timestamp) > yesterday
+                ).length;
+                
+                const yesterdaySearches = this.searchHistory.filter(item => {
+                    const date = new Date(item.timestamp);
+                    return date <= yesterday && date > new Date(yesterday - 86400000);
+                }).length;
+
+                // Update stats with trends
+                document.getElementById('totalSearches').textContent = totalSearches;
+                document.getElementById('searchesTrend').innerHTML = this.getTrendHTML(todaySearches, yesterdaySearches);
+
+                document.getElementById('totalBookmarks').textContent = totalBookmarks;
+                document.getElementById('totalClicks').textContent = totalClicks;
+            }
+
+            getTrendHTML(current, previous) {
+                const diff = current - previous;
+                const percentage = previous ? Math.round((diff / previous) * 100) : 100;
+                
+                if (diff > 0) {
+                    return `<span class="trend-up">
+                        <span class="material-symbols-rounded">trending_up</span>
+                        ${percentage}%
+                    </span>`;
+                } else if (diff < 0) {
+                    return `<span class="trend-down">
+                        <span class="material-symbols-rounded">trending_down</span>
+                        ${Math.abs(percentage)}%
+                    </span>`;
+                }
+                return '';
+            }
+
+            updatePatterns() {
+                // Calculate peak activity time
+                const hours = this.searchHistory.map(item => new Date(item.timestamp).getHours());
+                const peakHour = this.mode(hours);
+                document.getElementById('peakTime').textContent = 
+                    `${peakHour.toString().padStart(2, '0')}:00`;
+
+                // Calculate average search time
+                const searchTimes = [];
+                for (let i = 1; i < this.searchHistory.length; i++) {
+                    const timeDiff = new Date(this.searchHistory[i-1].timestamp) - 
+                                    new Date(this.searchHistory[i].timestamp);
+                    if (timeDiff < 3600000) { // Only count if less than 1 hour
+                        searchTimes.push(timeDiff);
+                    }
+                }
+                const avgTime = searchTimes.length ? 
+                    Math.round(searchTimes.reduce((a, b) => a + b, 0) / searchTimes.length / 1000) : 0;
+                document.getElementById('avgSearchTime').textContent = `${avgTime} sec`;
+            }
+
+            mode(array) {
+                return array.sort((a,b) =>
+                    array.filter(v => v === a).length - array.filter(v => v === b).length
+                ).pop();
+            }
+
+            updateInsights() {
+                const insightsList = document.getElementById('insightsList');
+                const insights = this.generateInsights();
+                
+                insightsList.innerHTML = insights.map(insight => `
+                    <div class="insight-item">
+                        <span class="insight-icon material-symbols-rounded">${insight.icon}</span>
+                        <div class="insight-content">
+                            <div class="insight-title">${insight.title}</div>
+                            <div class="insight-description">${insight.description}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            generateInsights() {
+                const insights = [];
+                
+                // Most active day
+                const days = this.searchHistory.map(item => 
+                    new Date(item.timestamp).toLocaleDateString('en-US', { weekday: 'long' })
+                );
+                const mostActiveDay = this.mode(days);
+                insights.push({
+                    icon: 'calendar_today',
+                    title: 'Most Active Day',
+                    description: `You're most active on ${mostActiveDay}s`
+                });
+
+                // Most visited domain
+                const domainCounts = this.getPopularDomains();
+                const topDomain = Object.entries(domainCounts)[0];
+                if (topDomain) {
+                    insights.push({
+                        icon: 'language',
+                        title: 'Favorite Website',
+                        description: `You frequently visit ${topDomain[0]}`
+                    });
+                }
+
+                // Search patterns
+                const searchLengths = this.searchHistory.map(item => item.query.length);
+                const avgLength = Math.round(searchLengths.reduce((a, b) => a + b, 0) / searchLengths.length);
+                insights.push({
+                    icon: 'analytics',
+                    title: 'Search Behavior',
+                    description: `Your searches are typically ${avgLength} characters long`
+                });
+
+                return insights;
+            }
+
+            getPopularDomains() {
+                const domains = {};
+                this.searchHistory.forEach(item => {
+                    if (item.siteInfo) {
+                        try {
+                            const url = new URL(item.siteInfo.link);
+                            const domain = url.hostname.replace('www.', '');
+                            domains[domain] = (domains[domain] || 0) + 1;
+                        } catch (e) {}
+                    }
+                });
+                return Object.fromEntries(
+                    Object.entries(domains)
+                        .sort(([,a], [,b]) => b - a)
+                );
+            }
+
+            truncateQuery(query) {
+                return query.length > 10 ? query.substring(0, 10) + '...' : query;
+            }
+
+            updateSearchEfficiency() {
+                const analyticsContent = document.querySelector('.analytics-content');
+                const existingCard = document.querySelector('.search-efficiency-card');
+                
+                if (existingCard) {
+                    existingCard.remove();
+                }
+
+                const searchEfficiencies = this.searchHistory
+                    .filter(item => item.siteInfo)
+                    .map(item => this.calculateSearchEfficiency(item))
+                    .filter(score => score !== null);
+
+                if (searchEfficiencies.length === 0) return;
+
+                const avgEfficiency = Math.round(
+                    searchEfficiencies.reduce((a, b) => a + b, 0) / searchEfficiencies.length
+                );
+
+                const card = document.createElement('div');
+                card.className = 'analytics-card search-efficiency-card';
+                card.innerHTML = `
+                    <h4>Search Efficiency</h4>
+                    <div class="efficiency-meter">
+                        <div class="efficiency-progress" style="width: ${avgEfficiency}%"></div>
+                        <span class="efficiency-value">${avgEfficiency}%</span>
+                    </div>
+                    <div class="efficiency-tips">
+                        <div class="tip-item">
+                            <span class="material-symbols-rounded">tips_and_updates</span>
+                            <span>${this.getEfficiencyTip(avgEfficiency)}</span>
+                        </div>
+                    </div>
+                `;
+
+                analyticsContent.insertBefore(card, analyticsContent.children[1]);
+            }
+
+            getEfficiencyTip(score) {
+                if (score >= 90) return "Excellent! Your searches are highly efficient.";
+                if (score >= 70) return "Good performance! Try using more specific keywords.";
+                if (score >= 50) return "Consider using shorter, more precise search terms.";
+                return "Try to be more specific in your searches for better results.";
+            }
+
+            updateSearchTrends() {
+                const analyticsContent = document.querySelector('.analytics-content');
+                const existingCard = document.querySelector('.search-trends-card');
+                
+                if (existingCard) {
+                    existingCard.remove();
+                }
+
+                const trends = this.analyzeSearchTrends();
+                if (!trends.length) return;
+
+                const card = document.createElement('div');
+                card.className = 'analytics-card search-trends-card';
+                card.innerHTML = `
+                    <h4>Search Trends</h4>
+                    <div class="trends-list">
+                        ${trends.map(trend => `
+                            <div class="trend-item">
+                                <span class="material-symbols-rounded">${trend.icon}</span>
+                                <div class="trend-content">
+                                    <div class="trend-title">${trend.title}</div>
+                                    <div class="trend-description">${trend.description}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                analyticsContent.insertBefore(card, analyticsContent.children[2]);
+            }
+
+            analyzeSearchTrends() {
+                const trends = [];
+                const words = this.searchHistory
+                    .map(item => item.query.toLowerCase().split(' '))
+                    .flat();
+
+                // Most common words
+                const wordFreq = {};
+                words.forEach(word => {
+                    if (word.length > 3) { // Ignore short words
+                        wordFreq[word] = (wordFreq[word] || 0) + 1;
+                    }
+                });
+
+                const topWord = Object.entries(wordFreq)
+                    .sort(([,a], [,b]) => b - a)[0];
+
+                if (topWord) {
+                    trends.push({
+                        icon: 'trending_up',
+                        title: 'Popular Topic',
+                        description: `"${topWord[0]}" appears in ${topWord[1]} searches`
+                    });
+                }
+
+                // Search time patterns
+                const hours = this.searchHistory.map(item => 
+                    new Date(item.timestamp).getHours()
+                );
+
+                const timeGroups = {
+                    morning: hours.filter(h => h >= 5 && h < 12).length,
+                    afternoon: hours.filter(h => h >= 12 && h < 17).length,
+                    evening: hours.filter(h => h >= 17 && h < 22).length,
+                    night: hours.filter(h => h >= 22 || h < 5).length
+                };
+
+                const peakTime = Object.entries(timeGroups)
+                    .sort(([,a], [,b]) => b - a)[0];
+
+                trends.push({
+                    icon: 'schedule',
+                    title: 'Peak Search Time',
+                    description: `Most active during ${peakTime[0]} hours`
+                });
+
+                // Search success rate
+                const successfulSearches = this.searchHistory.filter(item => item.siteInfo).length;
+                const totalSearches = this.searchHistory.length;
+                const successRate = Math.round((successfulSearches / totalSearches) * 100);
+
+                trends.push({
+                    icon: 'analytics',
+                    title: 'Search Success Rate',
+                    description: `${successRate}% of searches lead to clicks`
+                });
+
+                return trends;
+            }
+
+            updateCategoryAnalysis() {
+                const analyticsContent = document.querySelector('.analytics-content');
+                const existingCard = document.querySelector('.category-analysis-card');
+                
+                if (existingCard) {
+                    existingCard.remove();
+                }
+
+                const categories = this.analyzeSearchCategories();
+                if (!Object.keys(categories).length) return;
+
+                const card = document.createElement('div');
+                card.className = 'analytics-card category-analysis-card';
+                card.innerHTML = `
+                    <h4>Search Categories</h4>
+                    <div class="category-grid">
+                        ${Object.entries(categories).map(([category, count]) => `
+                            <div class="category-item">
+                                <div class="category-icon">
+                                    <span class="material-symbols-rounded">${this.getCategoryIcon(category)}</span>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name">${category}</div>
+                                    <div class="category-count">${count} searches</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                analyticsContent.insertBefore(card, analyticsContent.children[3]);
+            }
+
+            analyzeSearchCategories() {
+                const categories = {};
+                const categoryKeywords = {
+                    'Technology': ['programming', 'software', 'tech', 'computer', 'code', 'app'],
+                    'Entertainment': ['movie', 'music', 'game', 'show', 'video'],
+                    'Education': ['tutorial', 'course', 'learn', 'study', 'book'],
+                    'News': ['news', 'current', 'update', 'latest'],
+                    'Shopping': ['buy', 'price', 'shop', 'product', 'store']
+                };
+
+                this.searchHistory.forEach(item => {
+                    const query = item.query.toLowerCase();
+                    for (const [category, keywords] of Object.entries(categoryKeywords)) {
+                        if (keywords.some(keyword => query.includes(keyword))) {
+                            categories[category] = (categories[category] || 0) + 1;
+                        }
+                    }
+                });
+
+                return categories;
+            }
+
+            getCategoryIcon(category) {
+                const icons = {
+                    'Technology': 'computer',
+                    'Entertainment': 'movie',
+                    'Education': 'school',
+                    'News': 'newspaper',
+                    'Shopping': 'shopping_cart'
+                };
+                return icons[category] || 'category';
+            }
+
+            updateDomainsChart() {
+                const domainsChart = document.getElementById('domainsChart');
+                const domainsList = document.getElementById('domainsList');
+                const domainCounts = this.getPopularDomains();
+                const maxCount = Math.max(...Object.values(domainCounts));
+                
+                // Update chart
+                domainsChart.innerHTML = Object.entries(domainCounts)
+                    .slice(0, 7)
+                    .map(([domain, count], index) => {
+                        const height = (count / maxCount) * 160;
+                        return `
+                            <div class="chart-bar" 
+                                 style="height: ${height}px; animation-delay: ${index * 0.1}s"
+                                 data-value="${domain}"
+                                 title="${domain}: ${count} visits">
+                            </div>
+                        `;
+                    }).join('');
+
+                // Update domains list
+                domainsList.innerHTML = Object.entries(domainCounts)
+                    .slice(0, 10)
+                    .map(([domain, count]) => `
+                        <div class="domain-tag">
+                            ${domain}
+                            <span class="domain-count">${count}</span>
+                        </div>
+                    `).join('');
+            }
+
+            // Add new methods for preview and share functionality
+            showPreview(event, url, title, snippet) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Remove any existing preview cards
+                const existingCard = document.querySelector('.preview-card');
+                if (existingCard) {
+                    existingCard.remove();
+                }
+
+                // Get the favicon for the URL
+                const favicon = this.getFaviconUrl(url);
+
+                // Create preview card
+                const previewCard = document.createElement('div');
+                previewCard.className = 'preview-card';
+                previewCard.innerHTML = `
+                    <button class="preview-close" onclick="search.closePreview()">
+                        <span class="material-symbols-rounded">close</span>
+                    </button>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <img src="${favicon}" alt="" style="width: 24px; height: 24px; border-radius: 4px;">
+                        <div style="flex: 1; overflow: hidden;">
+                            <div style="font-size: 12px; color: var(--subheading-color);">${new URL(url).hostname}</div>
+                        </div>
+                    </div>
+                    <h3>${title}</h3>
+                    <p>${this.truncateSnippet(snippet, 250)}</p>
+                    <a href="${url}" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; color: #1d7efd; text-decoration: none; margin-top: 16px; font-size: 14px;">
+                        Visit website
+                        <span class="material-symbols-rounded" style="font-size: 18px;">open_in_new</span>
+                    </a>
+                `;
+
+                document.body.appendChild(previewCard);
+                document.querySelector('.preview-overlay').classList.add('show');
+                
+                // Show the preview card after a small delay to trigger animation
+                setTimeout(() => {
+                    previewCard.classList.add('show');
+                }, 50);
+            }
+
+            closePreview() {
+                const previewCard = document.querySelector('.preview-card');
+                const previewOverlay = document.querySelector('.preview-overlay');
+                
+                if (previewCard) {
+                    previewCard.classList.remove('show');
+                    previewOverlay.classList.remove('show');
+                    setTimeout(() => {
+                        previewCard.remove();
+                    }, 300);
+                }
+            }
+
+            showShareMenu(event, url, title) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Remove any existing share menu
+                const existingMenu = document.querySelector('.share-menu');
+                if (existingMenu) {
+                    existingMenu.remove();
+                }
+
+                // Create share menu
+                const shareMenu = document.createElement('div');
+                shareMenu.className = 'share-menu';
+                shareMenu.innerHTML = `
+                    <div class="share-header">
+                        <h3 class="share-title">Share via</h3>
+                        <button class="share-close" onclick="search.closeShareMenu()">
+                            <span class="material-symbols-rounded">close</span>
+                        </button>
+                    </div>
+                    <div class="share-options">
+                        <div class="share-option" onclick="search.shareResult('copy', '${url}')">
+                            <span class="material-symbols-rounded">content_copy</span>
+                            Copy Link
+                        </div>
+                        <div class="share-option" onclick="search.shareResult('twitter', '${url}', '${title.replace(/'/g, "\\'")}')">
+                            <span class="material-symbols-rounded">share</span>
+                            Share on Twitter
+                        </div>
+                        <div class="share-option" onclick="search.shareResult('email', '${url}', '${title.replace(/'/g, "\\'")}')">
+                            <span class="material-symbols-rounded">mail</span>
+                            Share via Email
+                        </div>
+                        <div class="share-option" onclick="search.shareResult('whatsapp', '${url}', '${title.replace(/'/g, "\\'")}')">
+                            <span class="material-symbols-rounded">call</span>
+                            Share on WhatsApp
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(shareMenu);
+                document.querySelector('.share-overlay').classList.add('show');
+                
+                // Show the share menu after a small delay to trigger animation
+                setTimeout(() => {
+                    shareMenu.classList.add('show');
+                }, 50);
+            }
+
+            closeShareMenu() {
+                const shareMenu = document.querySelector('.share-menu');
+                const shareOverlay = document.querySelector('.share-overlay');
+                
+                if (shareMenu) {
+                    shareMenu.classList.remove('show');
+                    shareOverlay.classList.remove('show');
+                    setTimeout(() => {
+                        shareMenu.remove();
+                    }, 300);
+                }
+            }
+
+            disableIndividualFilters() {
+                const filterIds = ['showArticles', 'showVideos', 'showCourses', 'showDocs'];
+                filterIds.forEach(id => {
+                    const checkbox = document.getElementById(id);
+                    checkbox.checked = false;
+                    checkbox.disabled = true;
+                    this.contentFilters[id.replace('show', '').toLowerCase()] = false;
+                });
+            }
+
+            enableIndividualFilters() {
+                ['showArticles', 'showVideos', 'showCourses', 'showDocs'].forEach(id => {
+                    document.getElementById(id).disabled = false;
+                });
+            }
+
+            updateActiveFilters() {
+                this.activeFilters.innerHTML = '';
+                
+                if (this.contentFilters.all) {
+                    this.activeFilters.innerHTML = `
+                        <div class="filter-tag">
+                            <span class="material-symbols-rounded">all_inclusive</span>
+                            All Content
+                        </div>
+                    `;
+                    return;
+                }
+
+                const filterLabels = {
+                    articles: 'Articles & Blogs',
+                    videos: 'Video Tutorials',
+                    courses: 'Online Courses',
+                    docs: 'Documentation'
+                };
+
+                const filterIcons = {
+                    articles: 'article',
+                    videos: 'play_circle',
+                    courses: 'school',
+                    docs: 'description'
+                };
+
+                Object.entries(this.contentFilters).forEach(([key, value]) => {
+                    if (key !== 'all' && value) {
+                        this.activeFilters.innerHTML += `
+                            <div class="filter-tag">
+                                <span class="material-symbols-rounded">${filterIcons[key]}</span>
+                                ${filterLabels[key]}
+                            </div>
+                        `;
+                    }
+                });
+            }
+        }
+
+        const search = new GoogleSearch();
+    </script>
+</body>
+</html> 

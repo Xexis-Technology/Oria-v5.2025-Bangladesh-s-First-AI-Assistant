@@ -1,0 +1,56 @@
+{
+  "name": "Oria AI Assistant",
+  "short_name": "Oria",
+  "description": "Your intelligent AI companion for learning and discovery",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101623",
+  "theme_color": "#023ab5",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "oria-share.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "oria-share.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "oria-share.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Chat",
+      "short_name": "New Chat",
+      "description": "Start a new conversation",
+      "url": "/?action=new",
+      "icons": [{ "src": "oria-share.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "Help Center",
+      "short_name": "Help",
+      "description": "Get help with Oria",
+      "url": "/help.html",
+      "icons": [{ "src": "oria-share.png", "sizes": "512x512" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "oria-share.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["productivity", "education", "utilities"],
+  "lang": "en",
+  "dir": "ltr"
+} 

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Oria AI Assistant | Your Intelligent Chat Companion</title>
+    <link rel="icon" type="image/x-icon" href="oria-share.png">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Oria is an advanced AI assistant that helps with coding, learning, and creative tasks. Get instant answers, code help, and smart solutions." />
+    <meta name="keywords" content="Oria AI, artificial intelligence, chatbot, coding assistant, learning tool, AI helper" />
+    <meta name="author" content="Xexis Team" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://xexis-oria.netlify.app/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="Oria AI" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Oria AI" />
+    <meta name="theme-color" content="#101623" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xexis-oria.netlify.app/" />
+    <meta property="og:title" content="Oria AI Assistant | Your Intelligent Chat Companion" />
+    <meta property="og:description" content="Get instant help with coding, learning, and creative tasks using Oria's advanced AI capabilities." />
+    <meta property="og:image" content="https://xexis-oria.netlify.app/oria-share.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://xexis-oria.netlify.app/" />
+    <meta property="twitter:title" content="Oria AI Assistant | Your Intelligent Chat Companion" />
+    <meta property="twitter:description" content="Get instant help with coding, learning, and creative tasks using Oria's advanced AI capabilities." />
+    <meta property="twitter:image" content="https://xexis-oria.netlify.app/oria-share.png" />
+    
+    <!-- Mobile Meta Tags -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="HandheldFriendly" content="True" />
+    
+    <!-- Preconnect to External Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@32,400,0,0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Oria AI Assistant",
+        "applicationCategory": "Artificial Intelligence",
+        "description": "Bangladesh's first AI chatbot assistant that helps with coding, learning, and creative tasks. A groundbreaking innovation in Bangladesh's tech landscape.",
+        "operatingSystem": "Any",
+        "url": "https://xexis-oria.netlify.app/",
+        "author": {
+          "@type": "Organization",
+          "name": "Xexis Team",
+          "location": {
+            "@type": "Country",
+            "name": "Bangladesh"
+          }
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "BDT"
+        },
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "Achievement",
+          "value": "First AI Chatbot in Bangladesh"
+        },
+        "countryOfOrigin": {
+          "@type": "Country",
+          "name": "Bangladesh"
+        }
+      }
+    </script>
+
+    <style>
+        /* Add menu button styles */
+        #menuButton {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--secondary-color);
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #menuButton:hover {
+            transform: scale(1.1);
+            background: var(--secondary-hover-color);
+        }
+
+        #menuButton.hide {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+
+        #menuButton .material-symbols-rounded {
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            #menuButton {
+                bottom: 80px;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <!-- Add this right after the body tag opens -->
+    <div class="skeleton-loader">
+      <div class="skeleton-header">
+        <div class="skeleton-nav">
+          <div class="skeleton-bar"></div>
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-bar"></div>
+        </div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-subtitle"></div>
+      </div>
+      <div class="skeleton-suggestions">
+        <div class="skeleton-suggestion"></div>
+        <div class="skeleton-suggestion"></div>
+        <div class="skeleton-suggestion"></div>
+        <div class="skeleton-suggestion"></div>
+      </div>
+      <div class="skeleton-input">
+        <div class="skeleton-input-bar"></div>
+        <div class="skeleton-circle small"></div>
+      </div>
+    </div>
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="navbar-left">
+        <span class="fas fa-bars" style="font-size: 20px;"></span>
+      </div>
+      <div class="navbar-center">
+        <p>Oria XSS</p>
+        <span class="version-ribbon beta">Beta</span>
+        <span class="hint-icon material-symbols-rounded">expand_more</span>
+      </div>
+      <div class="navbar-right">
+        <span class="fas fa-cog" style="font-size: 20px;"></span>
+      </div>
+    </nav>
+    
+    <!-- Add this after the navbar -->
+    <div class="side-panel">
+      <div class="side-panel-header">
+        <img src="oria.png" alt="Oria" class="side-panel-logo">
+        <h3>Oria Menu</h3>
+        <button class="close-side-panel material-symbols-rounded">close</button>
+      </div>
+      
+      <div class="side-panel-content">
+        <div class="side-panel-top">
+          <div class="side-panel-section">
+            <h4>Chat Options</h4>
+            <button class="side-panel-button" id="side-delete-chats">
+              <span class="material-symbols-rounded">add_circle</span>
+              <span>New Chat</span>
+            </button>
+            <button class="side-panel-button" id="side-export-chat">
+              <span class="material-symbols-rounded">download</span>
+              <span>Export Chat</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Add Quick Actions Section -->
+        <div class="side-panel-center">
+          <div class="side-panel-section">
+            <h4>Quick Actions</h4>
+            <button style="display: none;" class="side-panel-button" id="side-clear-memory">
+              <span class="material-symbols-rounded">refresh</span>
+              <span>Clear Memory</span>
+            </button>
+            <button class="side-panel-button" id="side-refresh">
+              <span class="material-symbols-rounded">refresh</span>
+              <span>Refresh Page</span>
+            </button>
+            <button style="display: none;" class="side-panel-button" id="side-share">
+              <span class="material-symbols-rounded">share</span>
+              <span>Share Oria</span>
+            </button>
+            <button class="side-panel-button" id="side-feedback">
+              <span class="material-symbols-rounded">rate_review</span>
+              <span>Send Feedback</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="side-panel-bottom">
+          <div class="side-panel-section">
+            <h4>Help & Info</h4>
+            <button class="side-panel-button" id="side-about">
+              <span class="material-symbols-rounded">info</span>
+              <span>About Oria</span>
+            </button>
+            <button class="side-panel-button" id="side-help">
+              <span class="material-symbols-rounded">help</span>
+              <span>Help Center</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="side-panel-footer">
+        <div class="side-panel-version">
+          <span class="version-name">Oria XSS 4Q</span>
+          <span class="version-badge beta">Beta</span>
+        </div>
+        <p>Oria by XEXIS'S • For knowledge purposes only</p>
+        <p class="legal-links">
+          <a href="privacy.html">Privacy Policy</a> • 
+          <a href="terms.html">Terms of Service</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="side-panel-overlay"></div>
+    
+    <div class="container">
+      <!-- Remove the 'hidden' class -->
+      <button id="scroll-bottom-btn" class="scroll-bottom-btn">
+        <span class="material-symbols-rounded">keyboard_arrow_down</span>
+       <!-- <span>Scroll to bottom</span> -->
+      </button>
+      
+      <!-- App Header -->
+      <header class="app-header">
+        <h1 class="heading">Hello, there</h1>
+        <h4 class="sub-heading">How can I help you today?</h4>
+        <a href="search.html" class="search-button">
+          <span class="material-symbols-rounded">search</span>
+          Oria Search
+        </a>
+      </header>
+      <!-- Suggestions List -->
+      <ul class="suggestions">
+        <li class="suggestions-item">
+          <p class="text">Design a home office setup for remote work under $500.</p>
+          <span class="icon material-symbols-rounded">draw</span>
+        </li>
+        <li class="suggestions-item">
+          <p class="text">How can I level up my web development expertise in 2025?</p>
+          <span class="icon material-symbols-rounded">lightbulb</span>
+        </li>
+        <li class="suggestions-item">
+          <p class="text">Suggest some useful tools for debugging JavaScript code.</p>
+          <span class="icon material-symbols-rounded">explore</span>
+        </li>
+        <li class="suggestions-item">
+          <p class="text">Create a React JS component for the simple todo list app.</p>
+          <span class="icon material-symbols-rounded">code_blocks</span>
+        </li>
+      </ul>
+      <!-- Chats -->
+      <div class="chats-container">
+        <!-- Bot messages will be added here -->
+        <!-- Example structure:
+        <div class="message bot-message">
+          <img class="avatar" src="oria.png" />
+          <p class="message-text">Message content here...</p>
+          <button class="message-action-btn" data-action="speak">
+            <span class="material-symbols-rounded">volume_up</span>
+          </button>
+        </div>
+        -->
+      </div>
+      <!-- Prompt Input -->
+      <div class="prompt-container">
+        <div class="prompt-wrapper">
+          <form action="#" class="prompt-form">
+            <input type="text" placeholder="Ask anything" class="prompt-input" required />
+            <div class="prompt-actions">
+              <!-- File Upload Wrapper -->
+              <div class="file-upload-wrapper">
+                <img src="#" class="file-preview" />
+                <input id="file-input" type="file" accept="image/*, .txt, .csv" hidden />
+                <button type="button" class="file-icon material-symbols-rounded">description</button>
+                <button id="cancel-file-btn" type="button" class="material-symbols-rounded">close</button>
+                <button id="add-file-btn" type="button" class="material-symbols-rounded">attach_file</button>
+              </div>
+              <!-- Send Prompt and Stop Response Buttons -->
+              <button id="stop-response-btn" type="button" class="material-symbols-rounded">stop_circle</button>
+              <button id="send-prompt-btn" class="material-symbols-rounded">arrow_upward</button>
+            </div>
+          </form>
+
+          <!-- Add Floating Text Box -->
+          <div class="floating-textbox-overlay"></div>
+          <div class="floating-textbox">
+            <textarea placeholder="Ask anything ..."></textarea>
+            <div class="floating-textbox-actions">
+              <button class="floating-textbox-btn cancel">
+                <span class="material-symbols-rounded">close</span>
+              </button>
+              <button class="floating-textbox-btn submit">
+                <span class="material-symbols-rounded">send</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Theme and Delete Chats Buttons -->
+          <button style="display: none;" id="theme-toggle-btn" class="material-symbols-rounded">light_mode</button>
+          <button style="display: none;" id="delete-chats-btn" class="material-symbols-rounded">delete</button>
+        </div>
+        <p class="disclaimer-text" style="display: none;">Verify outputs • AI-generated content</p>
+      </div>
+    </div>
+    
+    <!-- Popup -->
+    <div id="popup" class="popup hidden">
+      <div class="popup-content">
+        <span id="close-popup" class="close-button material-symbols-rounded">close</span>
+        <div class="popup-header">
+          <img src="oria.png" alt="Oria" class="popup-logo">
+          <h2>Oria XSS 4Q</h2>
+          <span class="version-badge">Beta</span>
+        </div>
+        <p class="popup-subtitle">Intelligent AI companion by Xexis's team • Crafted for learning and discovery</p>
+
+        <!-- Update the version list section -->
+        <div class="version-list">
+          <h3>Available Versions</h3>
+          <div class="version-items">
+            <div class="version-item" data-version="4q">
+              <span class="version-name">Oria XSS 4Q</span>
+              <span class="version-badge current">Current</span>
+            </div>
+            <div class="version-item" data-version="2s">
+              <span class="version-name">Oria XQS 2S</span>
+              <span class="version-badge">Stable</span>
+            </div>
+            <div class="version-item premium unreleased" data-version="4s">
+              <span class="version-name">Oria XQS 4S</span>
+              <div class="version-info">
+                <span class="version-badge premium">Coming Soon-Jan 2026</span>
+                <span class="material-symbols-rounded lock-icon">timer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <span class="material-symbols-rounded">bolt</span>
+            <span>Lightning-fast responses</span>
+          </div>
+          <div class="feature-item">
+            <span class="material-symbols-rounded">psychology</span>
+            <span>Advanced AI capabilities</span>
+          </div>
+          <div class="feature-item">
+            <span class="material-symbols-rounded">model_training</span>
+            <div class="feature-info">
+              <span style="font-size: 15px;">Trained on Google's Gemini model.</span>
+            </div>
+          </div>
+        </div>
+        <div class="popup-toggle-container">
+          <div class="toggle-info">
+            <span class="toggle-label">DeepSearch X</span>
+            <span class="toggle-description">Enable for more precise, detailed, and research-oriented responses</span>
+          </div>
+          <div class="toggle-switch-container">
+            <label class="toggle-switch">
+              <input type="checkbox" id="searchToggle">
+              <div class="toggle-button">
+                <span class="toggle-state on">ON</span>
+                <span class="toggle-state off">OFF</span>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Update the notification div -->
+    <div class="notification" id="notification">
+      <span class="notification-icon material-symbols-rounded"></span>
+      <span class="notification-text"></span>
+    </div>
+    
+    <!-- Update the settings dropdown -->
+    <div class="settings-dropdown">
+      <div class="settings-menu">
+        <div class="settings-header">
+          <h4>Settings</h4>
+          <button class="settings-close-btn">
+            <span class="material-symbols-rounded">close</span>
+          </button>
+        </div>
+        
+        <!-- Add user profile section -->
+        <div class="user-profile-section">
+          <div class="user-profile-header">
+            <div class="user-avatar-container">
+              <img id="settingsUserAvatar" src="default-avatar.png" alt="Profile" class="user-avatar">
+              <button class="edit-avatar-btn" id="editAvatarBtn">
+                <span class="material-symbols-rounded">edit</span>
+              </button>
+              <input type="file" id="avatarFileInput" accept="image/*" hidden>
+            </div>
+            <div class="user-info">
+              <div class="user-name-container">
+                <span id="settingsUserName">Username</span>
+                <button class="edit-name-btn" id="editNameBtn">
+                  <span class="material-symbols-rounded">edit</span>
+                </button>
+              </div>
+              <span id="settingsUserEmail" class="user-email">user@example.com</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="settings-section">
+          <div class="settings-item">
+            <div class="settings-item-info">
+              <span class="material-symbols-rounded" data-theme="dark">dark_mode</span>
+              <span>Dark Mode</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="theme-toggle">
+              <div class="toggle-slider"></div>
+            </label>
+          </div>
+          
+          <div style="display: none;"  class="settings-item">
+            <div class="settings-item-info">
+              <span class="material-symbols-rounded">record_voice_over</span>
+              <span>Voice Response</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="voice-toggle">
+              <div class="toggle-slider"></div>
+            </label>
+          </div>
+          
+          <!-- Add this new settings item to the settings-section -->
+          <div style="display: none;" class="settings-item">
+            <div class="settings-item-info">
+              <span class="material-symbols-rounded">mic</span>
+              <span>Voice Input</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="voice-input-toggle">
+              <div class="toggle-slider"></div>
+            </label>
+          </div>
+        </div>
+        <!-- Add this to the settings-dropdown after the existing settings items -->
+        <div class="settings-footer">
+          <div class="version-info">
+            <span class="version-label">Version</span>
+            <span class="version-number">v1.11.2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Add name edit modal -->
+    <div class="edit-name-modal" id="editNameModal">
+      <div class="edit-name-container">
+        <h4>Edit Username</h4>
+        <input type="text" id="newNameInput" maxlength="10" placeholder="Enter new username">
+        <div class="edit-name-buttons">
+          <button id="cancelNameEdit">Cancel</button>
+          <button id="saveNameEdit">Save</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Add this after the notification div -->
+    <div class="signup-popup" id="signupPopup">
+      <div class="signup-container">
+        <div class="signup-header">
+          <img src="oria.png" alt="Oria" class="signup-logo">
+          <h2>Welcome to Oria</h2>
+          <p>Please create your account to continue</p>
+        </div>
+        
+        <form id="signupForm" class="signup-form">
+          <div class="form-group">
+            <label for="userName">Username</label>
+            <input type="text" id="userName" required placeholder="Enter your username" maxlength="10">
+          </div>
+          
+          <div class="form-group">
+            <label for="userEmail">Email</label>
+            <input type="email" id="userEmail" required placeholder="Enter your email">
+          </div>
+          
+          <div class="form-group">
+            <label for="userImage">Profile Picture</label>
+            <div class="image-upload">
+              <img id="imagePreview" src="default-avatar.png" alt="Preview">
+              <input type="file" id="userImage" accept="image/*">
+              <button type="button" class="upload-btn">
+                <span class="material-symbols-rounded">add_a_photo</span>
+              </button>
+            </div>
+          </div>
+          
+          <button type="submit" class="submit-btn">
+            <span>Create Account</span>
+            <span class="material-symbols-rounded">arrow_forward</span>
+          </button>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Replace the existing voice input button with this updated version -->
+    <button class="voice-input-btn" id="voiceInputBtn" aria-label="Voice Input">
+      <span class="material-symbols-rounded">mic</span>
+      <span class="material-symbols-rounded recording-icon" style="display: none;">radio_button_checked</span>
+    </button>
+    
+    <!-- Add Email Popup -->
+    <div class="email-popup" id="emailPopup">
+      <div class="email-popup-content">
+        <div class="email-popup-header">
+          <h4>Email Address</h4>
+          <button class="email-popup-close">
+            <span class="material-symbols-rounded">close</span>
+          </button>
+        </div>
+        <div class="email-popup-body" id="fullEmail"></div>
+      </div>
+    </div>
+    
+    <script src="script.js"></script>
+    
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <a href="#" class="nav-item active" data-page="chat">
+        <span class="material-symbols-rounded">chat</span>
+        <span class="nav-text">Chat</span>
+      </a>
+      <a href="discover.html" class="nav-item" data-page="discover">
+        <span class="material-symbols-rounded">explore</span>
+        <span class="nav-text">Discover</span>
+      </a>
+      <a href="tools.html" class="nav-item" data-page="tools">
+        <span class="material-symbols-rounded">draw</span>
+        <span class="nav-text">write</span>
+      </a>
+    </nav>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get the prompt input element
+        const promptInput = document.querySelector('.prompt-input');
+        
+        // Check for prompt parameter in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const promptParam = urlParams.get('prompt');
+        
+        // If prompt parameter exists, fill the input field
+        if (promptParam && promptInput) {
+            promptInput.value = decodeURIComponent(promptParam);
+            promptInput.style.height = 'auto';
+            promptInput.style.height = promptInput.scrollHeight + 'px';
+        }
+        
+        // Rest of your initialization code...
+    });
+    </script>
+
+    <!-- Add styles for the search button -->
+    <style>
+        .search-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary-color, #1f2937);
+            color: var(--text-color);
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: fit-content;
+            align-self: flex-start;
+        }
+
+        .search-button .material-symbols-rounded {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            50% {
+                left: 100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background: var(--secondary-hover-color, #374151);
+        }
+
+        @media (max-width: 768px) {
+            .search-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .search-button .material-symbols-rounded {
+                font-size: 20px;
+            }
+        }
+    </style>
+
+  </body>
+</html>

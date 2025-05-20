@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help Center | Oria AI Assistant</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@32,400,0,0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    .help-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .help-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    
+    .help-logo {
+      width: 60px;
+      height: 45px;
+    }
+    
+    .help-title {
+      font-size: 28px;
+      margin: 0;
+    }
+    
+    .help-subtitle {
+      color: var(--subheading-color);
+      margin: 8px 0 0 0;
+    }
+    
+    .help-section {
+      margin-bottom: 32px;
+    }
+    
+    .help-section h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .help-section h2 span {
+      color: #1d7efd;
+    }
+    
+    .help-section p {
+      line-height: 1.6;
+      margin-bottom: 16px;
+      color: var(--text-color);
+    }
+    
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .faq-item {
+      background: var(--secondary-color);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .faq-question {
+      padding: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .faq-answer {
+      padding: 0 16px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    
+    .faq-item.active .faq-answer {
+      padding: 0 25px 16px;
+      max-height: 500px;
+    }
+    
+    .faq-item.active .faq-toggle {
+      transform: rotate(180deg);
+    }
+    
+    .back-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1d7efd;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-color);
+      transition: background 0.2s ease;
+    }
+    
+    .back-button:hover {
+      background: var(--secondary-hover-color);
+    }
+    
+    .search-container {
+      margin-bottom: 24px;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: none;
+      background: var(--secondary-color);
+      color: var(--text-color);
+      font-size: 16px;
+    }
+    
+    .search-input::placeholder {
+      color: var(--subheading-color);
+    }
+
+    /* Add new styles for the help button */
+    .help-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1d7efd;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 24px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .help-button:hover {
+      background: #0264e3;
+      transform: translateY(-2px);
+    }
+
+    .help-button span {
+      font-size: 20px;
+    }
+
+    /* Add new styles for help-section-2 */
+    .help-section-2 {
+      background: var(--secondary-color);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .help-section-2 h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #1d7efd;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .help-section-2 h2 span {
+      background: #1d7efd;
+      color: white;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    
+    .help-section-2 p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+    
+    .help-section-2 ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .help-section-2 li {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-color);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    
+    .help-section-2 li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #1d7efd;
+      font-weight: bold;
+    }
+    
+    .help-section-2 li:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-button" onclick="history.back()">
+    <span class="material-symbols-rounded">arrow_back</span>
+  </button>
+  
+  <div class="help-container">
+    <div class="help-header">
+      <img src="oria.png" alt="Oria" class="help-logo">
+      <div>
+        <h1 class="help-title">Help Center</h1>
+        <p class="help-subtitle">Find answers to common questions about Oria</p>
+      </div>
+    </div>
+    
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Search for help topics..." id="help-search">
+    </div>
+    
+    <div class="help-section">
+      <h2><span class="material-symbols-rounded">help</span> Frequently Asked Questions</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">
+            What can Oria help me with?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Oria can assist you with a wide range of tasks including:</p>
+            <ul>
+              <li>Answering questions and explaining concepts</li>
+              <li>Helping with coding problems and debugging</li>
+              <li>Generating creative content</li>
+              <li>Analyzing images and providing insights</li>
+              <li>Offering learning resources and tutorials</li>
+              <li>Providing step-by-step guidance</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I get the best responses from Oria?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>To get the most helpful responses:</p>
+            <ul>
+              <li>Be specific in your questions</li>
+              <li>Provide relevant context</li>
+              <li>Break complex problems into smaller parts</li>
+              <li>Use follow-up questions to clarify</li>
+              <li>Share code snippets or screenshots when discussing technical issues</li>
+              <li>Mention your preferred programming language when asking coding questions</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            What are the different versions of Oria?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Oria comes in three versions:</p>
+            <ul>
+              <li><strong>XSS 4Q (Beta):</strong> Latest version with advanced features, ultra-fast responses, and image analysis</li>
+              <li><strong>XQS 2S (Stable):</strong> Reliable version for general use with consistent performance</li>
+              <li><strong>XQS 4S (Coming Soon):</strong> Premium version combining speed with enhanced capabilities</li>
+            </ul>
+            <p>You can switch versions in the settings menu to find what works best for you.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I use the image analysis feature?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>To analyze images with Oria:</p>
+            <ol>
+              <li>Click the attachment button in the chat input</li>
+              <li>Select an image file from your device</li>
+              <li>Wait for the image to upload</li>
+              <li>Ask questions about the image or request analysis</li>
+            </ol>
+            <p>Note: Image analysis is available in XSS 4Q and XQS 4S versions.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I customize my Oria experience?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>You can customize Oria through the settings menu:</p>
+            <ul>
+              <li>Toggle between light and dark themes</li>
+              <li>Enable/disable voice responses</li>
+              <li>Switch between different versions</li>
+              <li>Update your profile information</li>
+              <li>Adjust notification preferences</li>
+            </ul>
+            <p>Access settings through the gear icon in the side panel.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I provide feedback or report issues?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>To send feedback or report issues:</p>
+            <ol>
+              <li>Open the side panel menu</li>
+              <li>Click the "Send Feedback" button</li>
+              <li>Choose your feedback type</li>
+              <li>Rate your experience</li>
+              <li>Describe your feedback or issue</li>
+              <li>Provide contact information (optional)</li>
+              <li>Submit the form</li>
+            </ol>
+            <p>Our team reviews all feedback to improve Oria.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I save and export my conversations?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>To manage your conversations:</p>
+            <ul>
+              <li>Conversations are automatically saved locally</li>
+              <li>Use the "Export Chat" button in the side menu to download</li>
+              <li>Clear chat history using the delete button</li>
+              <li>Start a new conversation anytime</li>
+            </ul>
+            <p>Note: Exported chats are saved as text files for easy reference.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            What should I do if Oria isn't responding?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>If you experience issues:</p>
+            <ol>
+              <li>Check your internet connection</li>
+              <li>Refresh the page</li>
+              <li>Clear your browser cache</li>
+              <li>Try switching to a different version</li>
+              <li>Report the issue through the feedback form</li>
+            </ol>
+            <p>If problems persist, include your device info when reporting the issue.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I create an account with Oria?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Creating an account is simple:</p>
+            <ol>
+              <li>When you first visit Oria, a signup popup will appear</li>
+              <li>Enter your name and email address</li>
+              <li>Upload a profile picture (optional)</li>
+              <li>Click "Create Account"</li>
+            </ol>
+            <p>Your account information is stored locally and helps personalize your experience.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            Can I use Oria on mobile devices?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes! Oria is fully responsive and works on:</p>
+            <ul>
+              <li>Smartphones (iOS and Android)</li>
+              <li>Tablets</li>
+              <li>Desktop computers</li>
+              <li>Laptops</li>
+            </ul>
+            <p>The interface automatically adjusts to your screen size for the best experience.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I switch between light and dark themes?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>To change the theme:</p>
+            <ol>
+              <li>Click the settings icon in the side panel</li>
+              <li>Find the "Dark Mode" toggle</li>
+              <li>Switch it on for dark theme or off for light theme</li>
+            </ol>
+            <p>Your theme preference will be saved for future sessions.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How does voice response work?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Voice response allows Oria to read responses aloud:</p>
+            <ol>
+              <li>Enable voice response in settings</li>
+              <li>Ask a question as usual</li>
+              <li>Oria will speak the response while displaying the text</li>
+              <li>Adjust your device volume as needed</li>
+            </ol>
+            <p>This feature is great for accessibility or when you're multitasking.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            Is my data private when using Oria?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>We take privacy seriously:</p>
+            <ul>
+              <li>Your conversations are stored locally on your device</li>
+              <li>We don't permanently store your chat history on our servers</li>
+              <li>Your account information is used only for personalization</li>
+              <li>You can delete your data at any time</li>
+            </ul>
+            <p>For sensitive information, we recommend starting a new chat after discussing confidential topics.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I edit my profile information?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>To update your profile:</p>
+            <ol>
+              <li>Open the settings menu</li>
+              <li>Your profile information appears at the top</li>
+              <li>Click the edit icon next to your name to change it</li>
+              <li>Click the edit icon on your profile picture to update it</li>
+              <li>Email addresses cannot be changed after account creation</li>
+            </ol>
+            <p>Your updated information will be saved automatically.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            Can I use Oria offline?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Oria requires an internet connection to function:</p>
+            <ul>
+              <li>All AI processing happens on our servers</li>
+              <li>You need to be online to send and receive messages</li>
+              <li>Previously loaded conversations may be viewable offline</li>
+              <li>Full functionality requires a stable internet connection</li>
+            </ul>
+            <p>We're exploring limited offline capabilities for future updates.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I clear my chat history?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>To clear your chat history:</p>
+            <ol>
+              <li>Click the delete button at the bottom of the chat</li>
+              <li>Confirm that you want to clear the conversation</li>
+              <li>Your chat will be reset and a new conversation will begin</li>
+            </ol>
+            <p>Alternatively, you can click "New Chat" in the side panel to start fresh.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            What file types can I upload to Oria?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Oria supports various file types:</p>
+            <ul>
+              <li><strong>Images:</strong> JPG, PNG, GIF, WebP</li>
+              <li><strong>Documents:</strong> PDF, TXT, MD</li>
+              <li><strong>Code:</strong> Various programming language files</li>
+            </ul>
+            <p>File size limits apply (typically up to 10MB per file).</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How accurate is Oria's information?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Oria strives for accuracy but has limitations:</p>
+            <ul>
+              <li>Information is based on training data with a cutoff date</li>
+              <li>It may not have knowledge of very recent events</li>
+              <li>Technical information is generally reliable but should be verified</li>
+              <li>For critical applications, always double-check information</li>
+            </ul>
+            <p>If you notice inaccuracies, please provide feedback to help us improve.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            Can I share my Oria conversations with others?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes, you can share conversations in several ways:</p>
+            <ol>
+              <li>Export the chat as a text file and share it</li>
+              <li>Take screenshots of important responses</li>
+              <li>Copy and paste text from the conversation</li>
+            </ol>
+            <p>When sharing, remember that the conversation contains both your inputs and Oria's responses.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            What should I do if I find inappropriate content?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>If you encounter inappropriate content:</p>
+            <ol>
+              <li>Use the feedback form to report the issue</li>
+              <li>Include details about what happened</li>
+              <li>Specify the question that triggered the response</li>
+              <li>Our team will investigate and improve our filters</li>
+            </ol>
+            <p>Oria is designed to be helpful and respectful, so we take these reports seriously.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            What email providers are supported for account creation?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Oria currently supports the following email providers:</p>
+            <ul>
+              <li>Gmail (@gmail.com)</li>
+              <li>Outlook (@outlook.com)</li>
+              <li>Hotmail (@hotmail.com)</li>
+              <li>iCloud (@icloud.com)</li>
+              <li>Yahoo (@yahoo.com)</li>
+            </ul>
+            <p>Other email providers are not supported at this time for security and verification purposes.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            How does Advanced Mode work?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Advanced Mode changes how Oria responds:</p>
+            <ul>
+              <li>Provides more focused and professional responses</li>
+              <li>Gives direct answers without unnecessary explanations</li>
+              <li>Uses technical language when appropriate</li>
+              <li>Available in XSS 4Q version</li>
+              <li>Toggle through the version popup menu</li>
+            </ul>
+            <p>Best suited for experienced users who need precise information.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Why is voice response only available on PC?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Voice response is PC-only for several reasons:</p>
+            <ul>
+              <li>Better performance and reliability on desktop browsers</li>
+              <li>More consistent voice synthesis quality</li>
+              <li>Reduced mobile data usage</li>
+              <li>Better integration with desktop audio systems</li>
+              <li>Mobile devices often have built-in text-to-speech options</li>
+            </ul>
+            <p>We're working on optimizing voice features for mobile in future updates.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            What's the difference between XSS and XQS versions?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>The version differences are:</p>
+            <ul>
+              <li><strong>XSS (Speed Series):</strong>
+                <ul>
+                  <li>Faster response times</li>
+                  <li>Optimized for quick interactions</li>
+                  <li>Best for real-time assistance</li>
+                </ul>
+              </li>
+              <li><strong>XQS (Quality Series):</strong>
+                <ul>
+                  <li>More detailed responses</li>
+                  <li>Enhanced accuracy</li>
+                  <li>Better for complex tasks</li>
+                </ul>
+              </li>
+            </ul>
+            <p>Choose based on your priority: speed or detail.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I use keyboard shortcuts with Oria?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>Available keyboard shortcuts:</p>
+            <ul>
+              <li><strong>Enter:</strong> Send message</li>
+              <li><strong>Shift + Enter:</strong> Add new line in message</li>
+              <li><strong>Esc:</strong> Close popups</li>
+              <li><strong>Ctrl/Cmd + C:</strong> Copy selected text</li>
+              <li><strong>Ctrl/Cmd + V:</strong> Paste content</li>
+            </ul>
+            <p>These shortcuts help you interact with Oria more efficiently.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            How do I use the Tools feature to save my ideas?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>The Tools feature allows you to save and organize your ideas:</p>
+            <ul>
+              <li>Click the "write" tab in the bottom navigation</li>
+              <li>Use the + button to add a new idea</li>
+              <li>Add title and content for your idea</li>
+              <li>Use tags to categorize your ideas</li>
+              <li>Share ideas via WhatsApp, email, or text file</li>
+              <li>Edit or delete ideas as needed</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            What is the Discover feature?
+            <span class="material-symbols-rounded faq-toggle">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            <p>The Discover feature helps you explore curated content and resources:</p>
+            <ul>
+              <li>Access educational content and resources</li>
+              <li>Find personalized recommendations</li>
+              <li>Explore trending topics and discussions</li>
+              <li>Save interesting content for later</li>
+              <li>Share discoveries with others</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="help-section-2">
+      <h2><span class="material-symbols-rounded">tips_and_updates</span> Tips for Better Results</h2>
+      <p>To get the most out of Oria, try these tips:</p>
+      <ul>
+        <li>Be specific in your questions</li>
+        <li>Provide context when needed</li>
+        <li>Use follow-up questions to refine responses</li>
+        <li>Try different phrasings if you don't get the answer you need</li>
+        <li>Enable Advanced Mode for more detailed responses</li>
+      </ul>
+    </div>
+
+    <div class="help-section-2">
+      <h2><span class="material-symbols-rounded">draw</span>Using Tools & Ideas</h2>
+      <p>Learn how to make the most of the Tools feature for managing your ideas:</p>
+      <ul>
+        <li>Create and organize ideas with an intuitive interface</li>
+        <li>Use tags to categorize and filter your content</li>
+        <li>Share ideas through multiple platforms</li>
+        <li>Export ideas as text files for backup</li>
+        <li>Search through your saved ideas easily</li>
+        <li>Edit and update ideas at any time</li>
+        <li>Ask Oria about your saved ideas</li>
+      </ul>
+    </div>
+
+    <div class="help-section-2">
+      <h2><span class="material-symbols-rounded">explore</span>Discovering Content</h2>
+      <p>Make the most of the Discover feature to explore new content:</p>
+      <ul>
+        <li>Browse curated educational resources</li>
+        <li>Get personalized content recommendations</li>
+        <li>Explore trending topics in various fields</li>
+        <li>Save interesting content for later reference</li>
+        <li>Share discoveries with your network</li>
+        <li>Filter content based on your interests</li>
+        <li>Access offline content when available</li>
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Add help button -->
+  <a href="https://form.jotform.com/250705777026459" target="_blank" class="help-button">
+    <span class="material-symbols-rounded">support_agent</span>
+    Need More Help?
+  </a>
+
+  <script>
+    // Update theme based on localStorage
+    document.addEventListener('DOMContentLoaded', () => {
+      const isLightTheme = localStorage.getItem("themeColor") === "light_mode";
+      document.body.classList.toggle("light-theme", isLightTheme);
+      
+      // Update logo based on theme
+      const logo = document.querySelector('.help-logo');
+      if (logo) {
+        logo.src = isLightTheme ? "oria1.png" : "oria.png";
+      }
+      
+      // FAQ toggle functionality
+      document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+          const faqItem = question.parentElement;
+          faqItem.classList.toggle('active');
+        });
+      });
+      
+      // Search functionality
+      const searchInput = document.getElementById('help-search');
+      const faqItems = document.querySelectorAll('.faq-item');
+      
+      searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        
+        faqItems.forEach(item => {
+          const question = item.querySelector('.faq-question').textContent.toLowerCase();
+          const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+          
+          if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html> 

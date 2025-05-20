@@ -1,0 +1,1772 @@
+  /* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+   outline: none;
+}
+
+html, body {
+  overflow-y: scroll; /* Allow scrolling */
+  scrollbar-width: none; /* For Firefox */
+}
+/* Hide scrollbar for all elements while maintaining scroll functionality */
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+*::-webkit-scrollbar {
+  display: none;
+}
+/* Remove tap highlight on mobile devices */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+/* For specific containers that need scroll but hidden scrollbar */
+.scrollable-content {
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.scrollable-content::-webkit-scrollbar {
+  display: none;
+}
+html::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}
+
+
+.typing-input {
+  padding-right: 40px; /* Ensure text doesn't overlap with icons */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+:root {
+  /* Copilot Light Mode Palette - A Symphony of Supportive Illumination */
+  --text-color: #000; /* Deep midnight navy, anchoring clarity */
+  --subheading-color: #4A5568; /* Sophisticated graphite, whispers of depth */
+  --placeholder-color: #718096; /* Soft slate, guiding with gentle presence */
+  --primary-color: #F7FAFC; /* Luminous cloud white, breathing with possibility */
+  --secondary-color: #EDF2F7; /* Ethereal pearl, soft as collaborative inspiration */
+  --secondary-hover-color: #E2E8F0; /* Delicate transition, like a collaborative embrace */
+  
+  /* Accent Gradients - Capturing Innovation's Spirit */
+  --mood-color: linear-gradient(135deg, #4299E1, #48BB78); /* Serene tech blue merging with fresh green */
+  --gemini-color: linear-gradient(135deg, #3182CE, #38B2AC); /* Harmonious cool tones of collaborative energy */
+  
+  --help-color: #3182CE; /* Vibrant yet approachable azure, radiating support */
+  --dcb-color: #F7FAFC; /* Pristine background, clean as a blank canvas */
+}
+
+.dark_mode {
+  /* Dark mode colors */
+  --text-color: #fff; /* Soft lunar white */
+  --subheading-color: #9CA3AF; /* Misty silver */
+  --placeholder-color: #6B7280; /* Shadowed graphite */
+  --primary-color: #111827; /* Deep midnight navy */
+ --secondary-color: #1A202C; /* Obsidian's dream, rich with unspoken stories */
+  --secondary-hover-color: #2D3748; /* Whispered transition, like a creative spark igniting */
+  --mood-color: linear-gradient(135deg, #E74C3C, #EE9CA7);
+  --gemini-color: linear-gradient(135deg, #d96570, #4285f4);
+  
+ --help-color: #E74C3C; /* Passionate, intense coral */
+  --dcb-color: #2C3E50; /* Deep, contemplative navy */
+}
+.avatar {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+}
+
+.avatar svg {
+    width: 100%;
+    height: 100%;
+}
+.avatar.active svg path {
+    stroke: #34a853; /* Google green, or any color you prefer */
+}
+/* Add to style.css */
+.avatar svg circle {
+    stroke-dasharray: 44;
+    stroke-dashoffset: 44;
+    animation: drawCircle 2s ease forwards, pulseCircle 3s infinite;
+}
+
+@keyframes drawCircle {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes pulseCircle {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+body {
+  background: var(--primary-color);
+}
+
+.header, .chat-list .message, .typing-form {
+  margin: 0 auto;
+  max-width: 980px;
+}
+.chat-list .message:last-child {
+    animation: newMessage 0.5s ease;
+}
+
+@keyframes newMessage {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+.header {
+  margin-top: 6vh;
+  padding: 1rem;
+  overflow-x: hidden;
+}
+
+body.hide-header .header {
+  margin: 0;
+  display: none;
+}
+
+.header :where(.title, .subtitle) {
+  color: var(--text-color);
+  font-weight: 500;
+  line-height: 4rem;
+}
+
+.header .title {
+  width: fit-content;
+  font-size: 3rem;
+  background-clip: text;
+  background: var(--mood-color);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header .subtitle {
+  font-size: 2.2rem;
+  color: var(--subheading-color);
+  
+}
+
+.suggestion-list {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 9.5vh;
+  overflow: hidden;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.suggestion-list .suggestion {
+  cursor: pointer;
+  padding: 1.25rem;
+  width: 222px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  border-radius: 0.75rem;
+  justify-content: space-between;
+  background: var(--secondary-color);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.suggestion-list .suggestion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+/* Add to style.css */
+
+
+.suggestion-list .suggestion:hover::before {
+  transform: translateX(0);
+}
+.suggestion-list .suggestion:hover {
+  background: var(--secondary-hover-color);
+}
+
+.suggestion-list .suggestion :where(.icon) {
+  font-weight: 400;
+  color: var(--text-color);
+}
+.suggestion-list .suggestion :where(.text) {
+  font-weight: 400;
+  color: var(--text-color);
+  font-family: "Poppins", sans-serif;
+}
+.suggestion-list .suggestion .icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  font-size: 1.3rem;
+  margin-top: 2.5rem;
+  align-self: flex-end;
+  align-items: center;
+  border-radius: 50%;
+  justify-content: center;
+  color: #fff;
+  background: var(--help-color);
+  margin-right: 149px;
+  margin-top: -10px;
+  margin-bottom: 5px;
+}
+.suggestion-list .suggestion .icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.chat-list {
+  padding: 2rem 1rem 12rem;
+  max-height: 100vh;
+  overflow-y: auto;
+  scrollbar-color: #999 transparent;
+}
+
+.chat-list .message.incoming {
+  margin-top: 1.5rem;
+}
+.chat-list .message.incoming .text a {
+    color: var(--help-color);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+/* Optional: Add hover effect */
+.chat-list .message.incoming .text a:hover {
+    opacity: 0.8;
+}
+
+.chat-list .message .message-content {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.chat-list .message:hover .message-content {
+  transform: translateX(5px);
+}
+.chat-list .message .message-conten {
+display: flex;
+align-items: center;
+gap: 1.5rem;
+background-color: var(--secondary-color);
+border-radius: 10px;
+padding: 1rem;
+width: fit-content;
+margin-left: auto;
+}
+
+.chat-list .message .text {
+  color: var(--text-color);
+  white-space: pre-wrap;
+  
+}
+
+.chat-list .message.error .text {
+  color: #e55865;
+}
+
+.chat-list .message.loading .text {
+  display: none;
+}
+
+.chat-list .message .avatar {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  align-self: flex-start;
+}
+
+.chat-list .message.loading .avatar {
+   animation: showHide 2s infinite;
+}
+
+@keyframes showHide {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.chat-list .message .icon {
+  color: var(--text-color);
+  cursor: pointer;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  font-size: 1.25rem;
+  margin-left: 1.5rem;
+  visibility: hidden;
+}
+
+.chat-list .message .icon.hide {
+  visibility: hidden;
+}
+
+.chat-list .message:not(.loading, .error):hover .icon:not(.hide){
+  visibility: visible;
+}
+
+.chat-list .message .icon:hover {
+  background: var(--secondary-hover-color);
+}
+
+.chat-list .message .loading-indicator {
+    position: relative;
+    display: none;
+    gap: 0.8rem;
+    width: 100%;
+    flex-direction: column;
+}
+
+.chat-list .message.loading .loading-indicator {
+    display: flex;
+}
+
+.loading-indicator {
+    position: relative;
+}
+
+.loading-bar {
+    position: relative;
+    overflow: hidden;
+    height: 11px;
+    width: 100%;
+    border-radius: 0.135rem;
+    background: var(--secondary-color);
+}
+
+.loading-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--help-color),
+        transparent
+    );
+    animation: loadingShimmer 1.5s infinite;
+}
+
+.chat-list .message .loading-indicator .loading-bar:last-child {
+    width: 70%;
+}
+
+@keyframes loadingShimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+}
+
+.chat-list .message .loading-indicator .loading-bar:last-child {
+  width: 70%;
+}
+
+.message-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+    padding: 4px;
+    position: relative;
+    align-items: center;
+}
+/* Style for the listen button */
+/* Improved mobile touch handling */
+.message-actions .icon[title="Listen to message"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.message-actions .icon[title="Listen to message"]:active {
+    opacity: 0.7;
+}
+
+.menu-container {
+  position: relative;
+}
+
+.menu-trigger {
+  cursor: pointer;
+}
+
+.act-buttons {
+  position: relative;
+  display: inline-block;
+}
+
+.icon {
+  cursor: pointer;
+  padding: 8px;
+}
+/* Add to style.css */
+.icon {
+    position: relative;
+    overflow: hidden;
+}
+
+.icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, var(--help-color) 10%, transparent 10.01%);
+    transform: scale(10);
+    opacity: 0;
+    transition: transform .5s, opacity 1s;
+}
+
+.icon:active::after {
+    transform: scale(0);
+    opacity: 0.3;
+    transition: 0s;
+}
+
+
+/* Optional: Add hover effects */
+.icon:hover {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 50%;
+}
+
+
+/* Keep hover effect for all icons */
+.icon:hover {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.suggestions {
+    position: absolute;
+    bottom: 120%; /* Changed from top to bottom */
+    left: 0;
+    right: 0;
+    background: var(--secondary-color);
+    border-radius: 15px;
+    margin-bottom: 5px;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 1000;
+    max-height: 50vh;
+    overflow-y: auto;
+	color: var(--text-color);
+}
+
+.suggestion-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.suggestion-item {
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.suggestion-item:hover {
+    border-left: 3px solid var(--help-color);
+    padding-left: 25px;
+}
+.suggestion-item:hover {
+    background: var(--secondary-hover-color);
+}
+
+.highlight {
+    color: var(--help-color);
+    font-weight: 500;
+}
+
+.suggestion-tag {
+    background: var(--primary-color);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    color: var(--text-color);
+    margin-left: 10px;
+	border: 1px solid var(--subheading-color);
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        width: 95%;
+    }
+    
+    .suggestion-item {
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .typing-input {
+        padding: 12px 15px;
+    }
+    
+    .suggestion-tag {
+        padding: 2px 6px;
+    }
+}
+
+/* Optional: Animation for when speaking */
+.message-actions .icon[title="Listen to message"].speaking {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+.icon {
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.like-icon {
+    color: #666;
+}
+
+.liked {
+    color: #ff4081 !important;
+}
+
+.like-animation {
+    animation: likeEffect 0.3s ease;
+}
+
+@keyframes likeEffect {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+.liked.material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+.inline-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.inline-options {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--secondary-color);
+    min-width: 250px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 12px;
+    z-index: 1;
+    opacity: 0; /* Start with hidden opacity */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.inline-options.show {
+    display: block; /* Display when the 'show' class is added */
+    opacity: 1; /* Fade in */
+    transform: translate(-50%, -50%) scale(1); /* Scale to normal size */
+}
+
+/* Optional: Add an animation for a pop-in effect */
+@keyframes pop-in {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8); /* Start small */
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1); /* End at normal size */
+    }
+}
+
+.inline-options.show {
+    animation: pop-in 0.4s ease-out forwards; /* Apply the pop-in animation */
+}
+
+
+
+
+.menu-section {
+    margin-bottom: 16px;
+}
+
+.menu-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: inline-flex; /* Changed from flex to inline-flex */
+    border: none;
+    background: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+
+.action-btn:hover {
+    background-color: var(--secondary-hover-color);
+}
+
+.action-btn i {
+    font-size: 18px;
+}
+
+.action-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Social media colors */
+/* WhatsApp icon color */
+.whatsapp i {
+    color: #25D366;
+}
+
+/* Telegram icon color */
+.telegram i {
+    color: #0088cc;
+}
+
+/* Twitter icon color */
+.twitter i {
+    color: #1DA1F2;
+}
+
+/* Facebook icon color */
+.facebook i {
+    color: #4267B2;
+}
+
+/* Email icon color */
+.email i {
+    color: #EA4335;
+}
+
+/* LinkedIn icon color */
+.linkedin i {
+    color: #0077B5;
+}
+
+/* Reddit icon color */
+.reddit i {
+    color: #FF4500;
+}
+
+/* Pinterest icon color */
+.pinterest i {
+    color: #E60023;
+}
+
+/* Tumblr icon color */
+.tumblr i {
+    color: #35465C;
+}
+
+/* Search provider styles */
+.gemini img {
+    opacity: 0.8;
+}
+.chatgpt img {
+    opacity: 0.8;
+}
+.action-btn:hover img {
+    opacity: 1;
+}
+@keyframes loading {
+  0% {
+    background-position: -800px 0;
+  }
+
+  100% {
+    background-position: 800px 0;
+  }
+}
+
+.typing-area {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0px;
+  padding: 0.5rem;
+  background: var(--primary-color);
+  height: 90px;
+  border-top: 1px solid var(--secondary-color);
+}
+
+.typing-area :where(.typing-form, .act-buttons) {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.typing-form .input-wrapper {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  position: relative;
+}
+
+.typing-form .typing-input {
+  height: 100%;
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 1rem;
+  color: var(--text-color);
+  padding: 1.1rem 4rem 1.1rem 1.5rem;
+  border-radius: 25px;
+  background: var(--secondary-color);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+.typing-form .typing-input:focus {
+  box-shadow: inset 0 0 0 1px var(--help-color);
+}
+
+.typing-form .typing-input:hover::placeholder {
+
+}
+
+.typing-form .typing-input:focus {
+  background: var(--secondary-color);
+}
+
+.typing-form .typing-input::placeholder {
+  color: var(--placeholder-color);
+}
+.typing-input::placeholder {
+  transition: opacity 0.5s ease;
+
+}
+
+.typing-input:focus::placeholder {
+  opacity: 0;
+}
+.typing-area .icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  align-items: center;
+  justify-content: center;
+  background: var(--secondary-color);
+  transition: 0.2s ease;
+  margin-right: 5px;
+}
+
+.typing-area .icon:hover {
+  background: var(--secondary-hover-color);
+}
+
+.typing-form #send-message-button {
+  position: absolute;
+  right: -8px;
+  outline: none;
+  border: none;
+  transform: scale(0);
+  background: transparent;
+  transition: transform 0.2s ease;
+  top: 11%;
+}
+
+.dropdown-menu {
+    position: absolute;
+    bottom: 120%;
+    right: revert-layer;
+    background: var(--secondary-color);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--dcb-color);
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.tooltip {
+    position: relative;
+    background: var(--secondary-hover-color);
+    color: var(--text-color);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    margin-left: 0px; /* Add space for the arrow */
+}
+
+/* Add arrow */
+.tooltip::before {
+    content: '';
+    position: absolute;
+    left: -12px; /* Position the arrow */
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent var(--secondary-hover-color) transparent transparent;
+}
+
+/* Modify settings popup to show inside dropdown */
+.settings-popup {
+    display: none;
+    position: relative;  /* Changed from absolute */
+    margin-top: 8px;    /* Add spacing from settings button */
+    background: var(--secondary-color);
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid var(--dcb-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.settings-popup.show {
+    display: block;
+    animation: popup-fade 0.3s ease-in-out;
+}
+.settings-content {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    gap: 8px; /* Adjust the gap size as needed */
+}
+
+#settings-button{
+	transition: transform 0.3s ease;
+}
+
+#settings-button:hover {
+    transform: rotate(20deg);
+}
+
+.profile-upload-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.profile-pic {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--help-color);
+    transition: transform 0.3s ease;
+}
+
+.profile-pic:hover {
+    transform: scale(1.01);
+}
+
+
+@media (max-width: 768px) {
+   .profile-pic {
+        height: 50px;
+        width: 50px;
+    }
+}
+
+
+/* Show tooltips when dropdown is visible */
+.dropdown-menu.show .tooltip {
+    opacity: 1;
+}
+
+/* Existing show class for dropdown */
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.typing-form .typing-input:valid ~ #send-message-button {
+  transform: scale(1);
+}
+
+.action-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.action-icon.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) scale(0.8);
+}
+
+#voice-btn:not(.hidden) {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) scale(1);
+}
+
+#send-message-button:not(.hidden) {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) scale(1);
+}
+
+.typing-area .disclaimer-text {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+  color: var(--placeholder-color);
+}
+
+/* Responsive media query code for small screen */
+@media (max-width: 768px) {
+  .header :is(.title, .subtitle) {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  .header .subtitle {
+    font-size: 1.5rem;
+  }
+ .h1{
+	 font-size: 1rem;
+	 
+ }
+  .typing-area :where(.typing-form, .act-buttons) {
+    gap: 0.4rem;
+  }
+
+  .typing-form .input-wrapper {
+    height: 50px;
+  }
+
+  .typing-form .typing-input {
+    padding: 1.1rem 3.5rem 1.1rem 1.2rem;
+  }
+
+  .typing-area .icon {
+    height: 50px;
+    width: 50px;
+  }
+
+  .typing-area .disclaimer-text {
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+  }
+}
+
+
+
+button {
+  max-width: 320px;
+  display: flex;
+  padding: 0.5rem 1.4rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: middle;
+  align-items: center;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  gap: 0.75rem;
+  color: rgb(65, 63, 63);
+  background-color: var(--secondary-color);
+  cursor: pointer;
+  transition: all .6s ease;
+}
+
+.button svg {
+  height: 24px;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+.popu {
+    background: linear-gradient(270deg,#159957, #155799, #ff8c00 );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+	background-size: 600% 600%;
+    animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+/* Advanced Preloader Styles */
+.pre-loader {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Skeleton Loader Styles */
+.skeleton-loader {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.skeleton-header {
+    margin: 6vh auto 0;
+    padding: 1rem;
+}
+
+.skeleton-title {
+    height: 48px;
+    width: 60%;
+    background: var(--secondary-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-subtitle {
+    height: 32px;
+    width: 80%;
+    background: var(--secondary-color);
+    border-radius: 8px;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-suggestions {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 9.5vh;
+    overflow-x: hidden;
+}
+
+.skeleton-card {
+    width: 222px;
+    height: 150px;
+    background: var(--secondary-color);
+    border-radius: 0.75rem;
+    flex-shrink: 0;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-chat {
+    margin-top: 40px;
+}
+
+.skeleton-message {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-text {
+    flex: 1;
+}
+
+.skeleton-line {
+    height: 16px;
+    background: var(--secondary-color);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-line:first-child {
+    width: 85%;
+}
+
+.skeleton-line:last-child {
+    width: 65%;
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
+/* Ensure smooth transition when removing loader */
+.pre-loader.hidden .skeleton-loader {
+    animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+
+/* Add these responsive styles to your style.css file */
+
+/* Tablet and smaller desktops */
+@media screen and (max-width: 1024px) {
+    .skeleton-loader {
+        padding: 15px;
+    }
+
+    .skeleton-header {
+        margin: 4vh auto 0;
+    }
+
+    .skeleton-title {
+        height: 40px;
+        width: 70%;
+    }
+
+    .skeleton-subtitle {
+        height: 28px;
+        width: 85%;
+    }
+}
+
+/* Tablets */
+@media screen and (max-width: 768px) {
+    .skeleton-suggestions {
+        gap: 1rem;
+        margin-top: 7vh;
+    }
+
+    .skeleton-card {
+        width: 180px;
+        height: 130px;
+    }
+
+    .skeleton-message {
+        gap: 1rem;
+    }
+
+    .skeleton-avatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .skeleton-line {
+        height: 14px;
+    }
+}
+
+/* Mobile devices */
+@media screen and (max-width: 480px) {
+    .skeleton-loader {
+        padding: 10px;
+    }
+
+    .skeleton-header {
+        margin: 3vh auto 0;
+        padding: 0.75rem;
+    }
+
+    .skeleton-title {
+        height: 32px;
+        width: 80%;
+    }
+
+    .skeleton-subtitle {
+        height: 24px;
+        width: 90%;
+    }
+
+    .skeleton-suggestions {
+        margin-top: 5vh;
+        gap: 0.75rem;
+    }
+
+    .skeleton-card {
+        width: 150px;
+        height: 110px;
+    }
+
+    .skeleton-chat {
+        margin-top: 30px;
+    }
+
+    .skeleton-message {
+        gap: 0.75rem;
+    }
+
+    .skeleton-avatar {
+        width: 30px;
+        height: 30px;
+    }
+
+    .skeleton-line {
+        height: 12px;
+        margin-bottom: 6px;
+    }
+}
+
+/* Small mobile devices */
+@media screen and (max-width: 320px) {
+    .skeleton-card {
+        width: 130px;
+        height: 100px;
+    }
+
+    .skeleton-suggestions {
+        gap: 0.5rem;
+    }
+}
+
+/* For devices with very small height */
+@media screen and (max-height: 600px) {
+    .skeleton-header {
+        margin: 2vh auto 0;
+    }
+
+    .skeleton-suggestions {
+        margin-top: 4vh;
+    }
+}
+
+/* Ensure smooth horizontal scrolling on touch devices */
+@media (hover: none) {
+    .skeleton-suggestions {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+    }
+
+    .skeleton-card {
+        scroll-snap-align: start;
+    }
+}
+
+
+
+
+
+.material-symbols-rounded {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text-color);
+}
+
+.navbar {
+overflow: hidden;
+  background-color: var(--secondary-color);
+  position: fixed;
+  bottom: 3px;
+  width: calc(100% - 4px);
+  height: 50px;
+  z-index: 40;
+  margin-bottom: 0px;
+  border-radius: 9px;
+  margin-left: 2px;
+}
+
+
+
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 19px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  width: 20%;
+  MARGIN-TOP: -6px;
+}
+
+.navbar a:hover {
+  background: var(--secondary-hover-color);
+  color: black;
+}
+
+
+
+.main {
+  padding: 16px;
+  margin-bottom: 30px;
+}
+
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+
+/* Backdrop Overlay */
+.custom-alert-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
+    backdrop-filter: blur(5px); /* Blur effect */
+    z-index: 999; /* Behind the alert box */
+}
+
+/* Custom Alert Box */
+.custom-alert {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    z-index: 1000; /* Above everything */
+    max-width: 300px;
+    font-family: Arial, sans-serif;
+}
+
+.custom-alert p {
+    margin: 0 0 10px;
+    font-size: 16px;
+}
+
+.custom-alert button {
+    background-color: #721c24;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+	float: right;
+}
+
+.custom-alert button:hover {
+    background-color: #5a1a1f;
+}
+
+/* Disable body scrolling when alert is visible */
+body.no-scroll {
+    overflow: hidden;
+}
+.profile-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+
+
+
+/* Profile image wrapper with camera icon and overlay */
+.profile-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Default avatar overlay */
+/* Default avatar overlay with light black background */
+.profile-wrapper.default-avatar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3); /* Light black with 30% opacity */
+    border-radius: 50%;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+
+/* Camera icon for default avatar */
+.profile-wrapper.default-avatar::after {
+    content: 'photo_camera';
+    font-family: 'Material Symbols Rounded';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--help-color);
+    font-size: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+/* Hide overlay and camera icon when custom image is set */
+.profile-wrapper:not(.default-avatar)::before,
+.profile-wrapper:not(.default-avatar)::after {
+    opacity: 0;
+    pointer-events: none;
+}
+/* Enhance mobile touch handling */
+.profile-wrapper {
+    touch-action: manipulation; /* Optimize for touch */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+/* Ensure the file input is accessible but hidden */
+#profile-upload {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+/* Emoji picker styles */
+.profile-display {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    border: 2px solid var(--help-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.profile-display:hover {
+    transform: scale(1.05);
+}
+
+#selected-emoji {
+    user-select: none;
+}
+
+.emoji-picker {
+    position: fixed;
+    background: var(--secondary-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--dcb-color);
+    display: none;
+    -webkit-overflow-scrolling: touch; /* For smooth iOS scrolling */
+    overscroll-behavior: contain; /* Prevent parent scroll while scrolling picker */
+    scroll-behavior: smooth;
+    touch-action: pan-y; /* Enable vertical touch scrolling */
+    max-width: 90vw;
+    left: 50%;
+    transform: translateX(-50%);
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+}
+
+/* Hide scrollbar for Chrome/Safari */
+.emoji-picker::-webkit-scrollbar {
+    display: none;
+}
+
+/* Optimize touch targets for mobile */
+.emoji-option {
+    min-height: 44px; /* iOS minimum touch target size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation; /* Optimize touch handling */
+    -webkit-tap-highlight-color: transparent;
+}
+.emoji-option {
+    font-size: 24px;
+    padding: 8px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    animation: emojiFloat 3s ease-in-out infinite;
+}
+
+@keyframes emojiFloat {
+    0% {
+        transform: translateY(0px) scale(1);
+    }
+    50% {
+        transform: translateY(-3px) scale(1.1);
+    }
+    100% {
+        transform: translateY(0px) scale(1);
+    }
+}
+
+/* Add hover animation */
+.emoji-option:hover {
+    animation: emojiPop 0.3s ease forwards;
+    background-color: var(--secondary-hover-color);
+}
+
+@keyframes emojiPop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+/* Add animation for selected emoji in profile display */
+#selected-emoji {
+    animation: selectedEmojiPulse 2s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes selectedEmojiPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1) rotate(5deg);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Adjust size for different screen sizes */
+@media (max-width: 768px) {
+    .emoji-picker {
+        grid-template-columns: repeat(5, 1fr); /* Fewer columns on mobile */
+        max-height: 250px;
+        padding: 8px;
+    }
+    
+    .emoji-option {
+        font-size: 22px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .emoji-picker {
+        grid-template-columns: repeat(4, 1fr);
+        bottom: 80px; /* Adjust position from bottom */
+    }
+}
+
+
+
+.emoji-option:hover {
+    background-color: var(--secondary-hover-color);
+}
+
+@media (max-width: 768px) {
+    .profile-display {
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+    }
+}

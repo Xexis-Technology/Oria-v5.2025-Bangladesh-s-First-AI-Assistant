@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- user image in chat<img class="avatar" src="" alt="User avatar"> -->
+<head>
+<!-- Head show link -->
+<title>Oria - complex problem-solving </title>
+<link rel="icon" type="image/x-icon" href="images/pp.svg">
+<link rel="stylesheet" href="style.css">
+
+<!-- All meta tag -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="title" content="Oria - Your AI Assistant by Clory">
+  	<meta name="description" content="Oria is an advanced AI assistant created by Clory and its sub-studio, Midnight Studio.">
+    <meta name="keywords" content="Oria, AI assistant, Clory, AI technology, artificial intelligence, virtual assistant, AI tools, Clory AI, Midnight Studio, productivity assistant, web design assistant, AI for business, advanced AI assistant, personal assistant AI, AI support, Clory AI assistant, #oria, #CloryAI, #ArtificialIntelligence, #AIAssistant, #VirtualAssistant, #AIDesign, #TechTools, #ProductivityAI, #BusinessAI, #AIForBusiness">
+	<meta http-equiv="Feature-Policy" content="microphone 'self'">
+	<meta http-equiv="Permissions-Policy" content="microphone=self">
+	<meta http-equiv="X-Frame-Options" content="DENY">
+	<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+	
+<meta name="robots" content="index, follow"> <!-- Index the page and follow links -->
+
+<meta name="author" content="bappi-bhadro-650263321/">
+<meta http-equiv="refresh" content="3600"> 
+
+<!-- Open Graph (Social Media Sharing) -->
+<meta property="og:title" content="Oria - Your AI Assistant by Clory">
+<meta property="og:description" content="Oria is an advanced AI assistant created by Clory and its sub-studio, Midnight Studio.">
+<meta property="og:image" content="https://clory.netlify.app/images/pp.svg">
+<meta property="og:url" content="https://clory-oria.netlify.app/">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Sharing -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Oria - Your AI Assistant by Clory">
+<meta name="twitter:description" content="Oria is an advanced AI assistant created by Clory and its sub-studio, Midnight Studio.">
+<meta name="twitter:image" content="https://clory.netlify.app/images/bl.svg">
+
+	<!-- All type link tag -->
+	  <link rel="preload" href="style.css" as="style">
+	  <link rel="preload" href="script.js" as="script">
+		  <!-- Linking Google Fonts For Icons -->
+		  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+		  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+		  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
+		  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+
+<!-- All type head script tag -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+
+<!-- PushAlert -->
+<script type="text/javascript">
+        (function(d, t) {
+                var g = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+                g.src = "https://cdn.pushalert.co/integrate_5f004234cd719dd2cd88d1a561385e3d.js";
+                s.parentNode.insertBefore(g, s);
+        }(document, "script"));
+</script>
+<!-- End PushAlert -->
+</head>
+<!-- head finish body start -->
+<body style="cursor: default;" class="fadeIn">
+
+<!-- js to hide preloader loading is done / and first notification -->
+<div class='pre-loader'>
+    <div class="skeleton-loader">
+        <!-- Header Skeleton -->
+        <div class="skeleton-header">
+            <div class="skeleton-title"></div>
+            <div class="skeleton-subtitle"></div>
+        </div>
+        
+        <!-- Suggestions Skeleton -->
+        <div class="skeleton-suggestions">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+        </div>
+
+        <!-- Chat Skeleton -->
+        <div class="skeleton-chat">
+            <div class="skeleton-message">
+                <div class="skeleton-avatar"></div>
+                <div class="skeleton-text">
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type='text/javascript'>
+ window.addEventListener('load', function () {
+    const preLoader = document.querySelector('.pre-loader');
+    
+    // Graceful fade-out transition
+    if (preLoader) {
+        preLoader.style.transition = 'opacity 0.5s ease-in-out';
+        preLoader.style.opacity = '0';
+        
+        // Completely remove from DOM after transition
+        setTimeout(() => {
+            preLoader.classList.add('hidden');
+            preLoader.style.display = 'none';
+        }, 500);
+    }
+});
+	
+	// Define the notification HTML structure with enhanced semantics
+const notificationHTML = `
+<div id="persistent-notification" class="notification-wrapper" role="alert" aria-live="polite">
+    <div class="notification-content">
+        <span class="notification-icon material-symbols-rounded" aria-hidden="true">notifications_active</span>
+        <div class="notification-text">
+            <strong>Welcome to Oria!</strong>
+            <p>Your intelligent, AI-driven assistant designed to elevate conversations and deliver exceptional solutions effortlessly.</p>
+        </div>
+        <button class="notification-close material-symbols-rounded" aria-label="Close notification">close</button>
+    </div>
+</div>
+`;
+
+// Add notification styles with improved CSS custom properties
+const notificationStyles = document.createElement('style');
+notificationStyles.textContent = `
+.notification-wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+    max-width: 400px;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--primary-color);
+}
+
+.notification-wrapper.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    gap: 12px;
+}
+
+.notification-icon {
+    color: var(--help-color);
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.notification-text {
+    flex-grow: 1;
+    color: var(--text-color);
+    line-height: 1.4;
+}
+
+.notification-text strong {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.notification-text p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-close:hover {
+    background-color: var(--secondary-hover-color);
+}
+
+@media (max-width: 480px) {
+    .notification-wrapper {
+        left: 16px;
+        right: 16px;
+        bottom: 25px;
+        max-width: none;
+    }
+}
+`;
+
+// Initialize notification system with enhanced state management
+function initializePersistentNotification() {
+    // Check if notification has been permanently dismissed
+    if (localStorage.getItem('notificationDismissed') === 'true') {
+        return;
+    }
+
+    // Inject styles only if they haven't been added yet
+    if (!document.getElementById('notification-styles')) {
+        notificationStyles.id = 'notification-styles';
+        document.head.appendChild(notificationStyles);
+    }
+
+    // Remove any existing notification elements
+    const existingNotification = document.getElementById('persistent-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+
+    // Add notification HTML to document
+    document.body.insertAdjacentHTML('beforeend', notificationHTML);
+
+    // Get notification elements
+    const notification = document.getElementById('persistent-notification');
+    const closeButton = notification.querySelector('.notification-close');
+
+    // Show notification after name submission
+    const existingSubmitBtn = document.getElementById('submitBtn');
+    const originalClickHandler = existingSubmitBtn.onclick;
+
+    existingSubmitBtn.onclick = function(e) {
+        if (originalClickHandler) {
+            originalClickHandler.call(this, e);
+        }
+
+        // Show notification with a slight delay for better UX
+        setTimeout(() => {
+            notification.classList.add('visible');
+            sessionStorage.setItem('notificationVisible', 'true');
+        }, 1000);
+    };
+
+    // Handle close button click with permanent dismissal
+    closeButton.addEventListener('click', () => {
+        notification.classList.remove('visible');
+        localStorage.setItem('notificationDismissed', 'true');
+        setTimeout(() => notification.remove(), 300);
+    });
+
+    // Restore notification state on page refresh if it was previously shown
+    if (sessionStorage.getItem('notificationVisible') === 'true' && 
+        localStorage.getItem('notificationDismissed') !== 'true') {
+        setTimeout(() => {
+            notification.classList.add('visible');
+        }, 500);
+    }
+}
+
+// Initialize when DOM is ready and add page visibility handling
+document.addEventListener('DOMContentLoaded', () => {
+    initializePersistentNotification();
+});
+
+// Handle page visibility changes
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && 
+        sessionStorage.getItem('notificationVisible') === 'true' && 
+        localStorage.getItem('notificationDismissed') !== 'true') {
+        const notification = document.getElementById('persistent-notification');
+        if (notification) {
+            notification.classList.add('visible');
+        } else {
+            initializePersistentNotification();
+        }
+    }
+});
+</script>
+  <header class="header">
+    <!-- Overlay and Popup -->
+    <div id="overlay"></div>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+		
+            <!--<button class="modal-close" id="modalClose"></button>-->
+			
+            <h2 class="modal-title">Please enter your Nickname.</h2>
+            <div class="modal-content">
+                <div class="input-group">
+                    <input type="text" id="nameInput" placeholder="Enter your name - max 10 digits"  oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '');"  maxlength="10" style="text-transform: capitalize;" style="color: var(--text-color);" />
+                </div>
+<!--* user name send button */ -->
+<div class="sbt" id="submitBtn">
+  <div class="svg-wrapper-1">
+    <div class="svg-wrapper">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+      >
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path
+          fill="currentColor"
+          d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+        ></path>
+      </svg>
+    </div>
+  </div>
+  <span>Confirm</span>
+</div>
+<!--* user name send button finish */ -->
+                
+				<br/><br/>
+				<p style=" text-align: center;
+ color: var(--text-color);">Complete the form for security.<br> <b>Note:</b> <u>Oria</u> doesn’t collect your data—ever. <br>
+ <span style="background: var(--mood-color); -webkit-background-clip: text;-webkit-text-fill-color: transparent; font-size: 15px"> Clory</span> &<br/>
+ <span style="background: var(--mood-color); -webkit-background-clip: text;-webkit-text-fill-color: transparent; font-size: 15px"> Midnight Studio</span> </p>
+            </div>
+        </div>
+    </div>
+	    <style>
+
+h1 {
+    font-size: 2.4rem;
+    background: var(--mood-color);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    width: fit-content;
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+    transition: all 0.3s ease-in-out;
+    animation: professionalIn 1.2s ease-out forwards;
+}
+
+@keyframes professionalIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    50% {
+        opacity: 0.6;
+        transform: translateY(20px) scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+h1.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+
+
+
+
+ .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px); /* Adds the blur effect */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--secondary-color);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 24px;
+            line-height: 24px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--secondary-hover-color);
+        }
+
+        .modal-title {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-bottom: 20px;
+			text-align: center;
+        }
+
+        .modal-content {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--subheading-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+			background: var(--secondary-color);
+			color: var(--text-color);
+        }
+		
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+/* user name seend button */ 
+.sbt {
+  font-family: inherit;
+  font-size: 15px;
+  background: var(--secondary-hover-color);
+  color: var(--text-color);
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+  margin-left: auto;
+  width: 115px;
+}
+
+.sbt span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+}
+
+.sbt svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.sbt:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+.sbt:hover svg {
+  transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+.sbt:hover span {
+  transform: translateX(5em);
+}
+
+.sbt:active {
+  transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+
+/* edit there name  */  /* edit there name  */ /* edit there name  */
+#edit-name-button {
+    transition: transform 0.3s ease;
+}
+
+#edit-name-button:hover {
+    transform: rotate(15deg);
+}
+
+#editNameInput:focus {
+    border-color: var(--help-color);
+    outline: none;
+}
+
+    </style>
+    <!-- Header Greetings -->
+       <span id="displayName" style="text-transform: capitalize;"><h1 class="Hello-text"></h1></span>
+<div class="auto-change">
+    <p class="subtitle">I'm Oria. How can I <span style="color: var(--help-color);">help</span> you today?</p>
+	</div>
+	<br>
+	
+	 <script>
+    const textElement = document.querySelector('.auto-change span');
+    const words = ['help', 'assist', 'support', 'guide', 'advise', 'inform', 'teach'];
+    let index = 0;
+
+    setInterval(() => {
+      textElement.textContent = words[index];
+      index = (index + 1) % words.length; // Loop through words
+    }, 6000); // Change text seconds
+  </script>
+    <script>
+       document.addEventListener("DOMContentLoaded", function() {
+            // Get all necessary DOM elements
+            const modalOverlay = document.getElementById('modalOverlay');
+            const nameInput = document.getElementById('nameInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const modalClose = document.getElementById('modalClose');
+            const displayName = document.getElementById('displayName').querySelector('h1');
+
+            // Function to show the modal
+            function showModal() {
+                modalOverlay.classList.add('active');
+                nameInput.focus();
+            }
+
+            // Function to hide the modal
+            function hideModal() {
+                modalOverlay.classList.remove('active');
+            }
+
+            // Function to display the name
+            function displayWelcome(name) {
+                displayName.textContent = `Hi, ${name}`;
+                displayName.classList.add('appear');
+            }
+
+            // Function to handle name submission
+            function handleSubmit() {
+                const name = nameInput.value.trim();
+                
+                if (name) {
+                    // Capitalize first letter
+                    const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('visitorName', formattedName);
+                    localStorage.setItem('nameSubmitted', 'true');
+                    
+                    // Update display and hide modal
+                    displayWelcome(formattedName);
+                    hideModal();
+                } else {
+                    alert("Please enter your name.");
+                }
+            }
+
+            // Check if name has already been submitted
+            const storedName = localStorage.getItem('visitorName');
+            if (storedName && localStorage.getItem('nameSubmitted') === 'true') {
+                displayWelcome(storedName);
+            } else {
+                showModal();
+            }
+
+            // Event Listeners
+            submitBtn.addEventListener('click', handleSubmit);
+            
+            modalClose.addEventListener('click', () => {
+                const name = nameInput.value.trim();
+                if (name) {
+                    handleSubmit();
+                } else {
+                    hideModal();
+                }
+            });
+
+            nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleSubmit();
+                }
+            });
+        });
+		
+		
+    </script>
+
+	<!---Continue button-->
+<div class="popup">
+<button class="button" style="cursor: default;">
+	<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+		<path 
+			d="M16 7 A 7 7 0 1 0 16 17"
+			fill="none"
+			stroke="var(--help-color)"
+			stroke-width="2.5"
+			stroke-linecap="round">
+		</path>
+	</svg>
+<a href="https://clory.netlify.app/" style="color: var(--text-color); text-decoration: none;" target="_b">Continue with<span class="popu"  >&nbsp;&nbsp;Clory </span></a>
+</button>
+</div>
+
+
+<ul class="suggestion-list">
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">draw</span>
+	  <h4 class="text">Help me organize an unforgettable game night for my 5 closest friends under $100.</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">lightbulb</span>
+	  <h4 class="text">Explain this concept in a few sentences: urban planning.</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">explore</span>
+	  <h4 class="text">Can you help me track down the latest updates in machine learning?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">code</span>
+	  <h4 class="text">What's the difference between HTML and XHTML?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">location_on</span>
+	  <h4 class="text">How do you embed Google Maps on a webpage using HTML?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">link</span>
+	  <h4 class="text">How do you create a clickable hyperlink in HTML?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">travel_explore</span>
+	  <h4 class="text">Can you provide me with some useful travel tips?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">payments</span>
+	  <h4 class="text">What are some simple ways to make money online?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">construction</span>
+	  <h4 class="text">Show me how to build a DIY project from scratch.</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">icecream</span>
+	  <h4 class="text">Teach me how to make delicious homemade ice cream.</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">help</span>
+	  <h4 class="text">Search the web for the latest news on Tesla's Robotaxi.</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">star</span>
+	  <h4 class="text">What are the best strategies for building a personal brand online?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">book</span>
+	  <h4 class="text">What are some must-read books for entrepreneurs?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">mood</span>
+	  <h4 class="text">How can I improve my mental well-being during stressful times?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">emoji_events</span>
+	  <h4 class="text">Can you suggest some fun team-building activities for a group?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">camera</span>
+	  <h4 class="text">How do you take great product photos for e-commerce?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">public</span>
+	  <h4 class="text">What's the best way to promote a new product online?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">schedule</span>
+	  <h4 class="text">How do I manage my time better when working on multiple projects?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">fitness_center</span>
+	  <h4 class="text">What are some effective home workouts to stay in shape?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">music_note</span>
+	  <h4 class="text">How can I learn music production as a beginner?</h4>
+	</li>
+	<li class="suggestion">
+	  <span class="icon material-symbols-rounded">send</span>
+	  <h4 class="text">How do I set up an automated email campaign for my business?</h4>
+	</li>
+</ul>
+  </header>
+  
+  
+  <!-- Chat List / Container -->
+  <div class="chat-list"></div>
+
+  <!-- Typing Area -->
+  <div class="typing-area">
+    <form action="#" class="typing-form">
+ <div class="input-wrapper">
+  <div class="act-buttons">
+    <span id="more-button" class="icon material-symbols-rounded">more_vert</span>
+<!-- In index.html, find the dropdown-menu div -->
+<div class="dropdown-menu">
+  <div class="menu-item">
+        <span id="settings-button" class="icon material-symbols-rounded" style="background: var(--secondary-hover-color);">settings</span>
+        <span class="tooltip">Settings & Other's</span>
+    </div>
+    
+    <!-- Settings popup (will show inside dropdown) -->
+    <div id="settings-popup" class="settings-popup">
+        <div class="settings-content">
+<!-- Replace the profile-upload section with emoji picker -->
+<div class="menu-item">
+    <div class="profile-wrapper" id="emoji-picker-trigger">
+        <div class="profile-display">
+            <span id="selected-emoji">😊</span>
+        </div>
+    </div>
+    <span class="tooltip"><span id="profile-name"></span>'s Emoji</span>
+</div>
+
+            <div class="menu-item">
+                <span id="edit-name-button" class="icon material-symbols-rounded" style="background: var(--secondary-hover-color);">edit</span>
+                <span class="tooltip">Edit your name</span>
+            </div>
+			<div class="menu-item">
+				<span id="theme-toggle-button" class="icon material-symbols-rounded" style="background: var(--secondary-hover-color);">light_mode</span>
+				<span class="tooltip">Change theme</span>
+			</div>
+        </div>
+    </div>
+    <div class="menu-item">
+        <span id="delete-chat-button" class="icon material-symbols-rounded" style="background: var(--secondary-hover-color);">chat_add_on</span>
+        <span class="tooltip">Clear chat history</span>
+    </div>
+</div>
+<script>document.addEventListener('DOMContentLoaded', function() {
+    // Get the stored name
+    const storedName = localStorage.getItem('visitorName');
+    if (storedName) {
+        // Update the tooltip text
+        const profileNameSpan = document.getElementById('profile-name');
+        if (profileNameSpan) {
+            profileNameSpan.textContent = storedName;
+        }
+    }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const emojiTrigger = document.getElementById('emoji-picker-trigger');
+    const selectedEmoji = document.getElementById('selected-emoji');
+    let emojiPicker = null;
+    let touchStartY = 0;
+
+    // Common emojis array
+    const commonEmojis = [
+        '😊', '😂', '🥰', '😎', '🤔', '😄', '😁', '😅', '😇', 
+        '😍', '😘', '😜', '😝', '😒', '😞', '😢', '😭', '😡', 
+        '😤', '😱', '😳', '😌', '😔', '😷', '🤒', '🤕', '🤗', 
+        '🤩', '🤓', '🤠', '😐', '😑', '🙄', '😬', '😴', '😪',
+        '😵', '🥵', '🥶', '😶', '🤯', '😮', '😲', '🙃', '🥴',
+        '🤑', '🤨', '😕', '😟', '🙁', '☹️', '😏', '😬', '🤤',
+        '🤡', '😈', '👿', '👹', '👺', '🤖', '😺', '😸', '😹'
+    ];
+
+    // Create emoji picker with enhanced positioning and animations
+    function createEmojiPicker() {
+        const picker = document.createElement('div');
+        picker.className = 'emoji-picker';
+        
+        // Prevent body scrolling when scrolling emoji picker
+        picker.addEventListener('touchmove', (e) => {
+            if (picker.offsetHeight < picker.scrollHeight) {
+                e.stopPropagation();
+            }
+        }, { passive: true });
+
+        // Handle wheel events
+        picker.addEventListener('wheel', (e) => {
+            const { deltaY } = e;
+            if (
+                (deltaY < 0 && picker.scrollTop === 0) ||
+                (deltaY > 0 && picker.scrollTop + picker.clientHeight === picker.scrollHeight)
+            ) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        commonEmojis.forEach(emoji => {
+            const emojiOption = document.createElement('div');
+            emojiOption.className = 'emoji-option';
+            emojiOption.textContent = emoji;
+            
+            // Use both touch and click events for all devices
+            ['click', 'touchend'].forEach(eventType => {
+                emojiOption.addEventListener(eventType, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Add selection animation
+                    emojiOption.style.animation = 'emojiPop 0.3s ease forwards';
+                    
+                    // Update selected emoji with animation
+                    selectedEmoji.style.animation = 'none';
+                    selectedEmoji.offsetHeight; // Trigger reflow
+                    selectedEmoji.style.animation = 'selectedEmojiPulse 2s ease-in-out infinite';
+                    
+                    selectedEmoji.textContent = emoji;
+                    localStorage.setItem('userEmoji', emoji);
+                    
+                    // Remove the verified class to hide the badge
+                    const profileWrapper = document.querySelector('.profile-wrapper');
+                    if (profileWrapper) {
+                        profileWrapper.classList.remove('verified');
+                    }
+                    
+                    // Add slight delay before closing picker
+                    setTimeout(() => {
+                        hideEmojiPicker();
+                    }, 200);
+                }, { passive: false });
+            });
+            
+            picker.appendChild(emojiOption);
+        });
+
+        return picker;
+    }
+
+    function showEmojiPicker() {
+        if (!emojiPicker) {
+            emojiPicker = createEmojiPicker();
+            document.body.appendChild(emojiPicker);
+        }
+        
+        const triggerRect = emojiTrigger.getBoundingClientRect();
+        emojiPicker.style.display = 'grid';
+        
+        // Position picker based on screen size
+        if (window.innerWidth <= 768) {
+            emojiPicker.style.top = `${window.innerHeight - emojiPicker.offsetHeight - 100}px`;
+        } else {
+            emojiPicker.style.top = `${triggerRect.bottom + 10}px`;
+        }
+    }
+
+    function hideEmojiPicker() {
+        if (emojiPicker) {
+            emojiPicker.style.display = 'none';
+        }
+    }
+
+    // Load saved emoji on page load
+    const savedEmoji = localStorage.getItem('userEmoji');
+    if (savedEmoji) {
+        selectedEmoji.textContent = savedEmoji;
+    }
+
+    // Event listeners with mobile support
+    ['click', 'touchend'].forEach(eventType => {
+        emojiTrigger.addEventListener(eventType, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            showEmojiPicker();
+        }, { passive: false });
+    });
+
+    // Close picker when clicking/touching outside
+    document.addEventListener('click', (e) => {
+        if (emojiPicker && !emojiPicker.contains(e.target) && !emojiTrigger.contains(e.target)) {
+            hideEmojiPicker();
+        }
+    });
+
+    // Handle mobile scroll
+    document.addEventListener('scroll', () => {
+        if (emojiPicker && emojiPicker.style.display === 'grid') {
+            hideEmojiPicker();
+        }
+    }, { passive: true });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (emojiPicker && emojiPicker.style.display === 'grid') {
+            hideEmojiPicker();
+        }
+    }, { passive: true });
+});
+
+
+</script>
+
+<!-- Custom Alert Backdrop -->
+<div id="custom-alert-backdrop" class="custom-alert-backdrop"></div>
+
+<!-- Custom Alert Box -->
+<div id="custom-alert" class="custom-alert">
+    <p id="alert-message"></p>
+    <button id="alert-close">OK</button>
+</div>
+
+
+<script>document.addEventListener('DOMContentLoaded', function() {
+    const settingsButton = document.getElementById('settings-button');
+    const settingsPopup = document.getElementById('settings-popup');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+    settingsButton.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent event bubbling
+        
+        // Toggle settings popup
+        settingsPopup.classList.toggle('show');
+        
+        // Hide other menu items when settings is shown
+        const menuItems = dropdownMenu.querySelectorAll('.menu-item:not(:first-child)');
+        menuItems.forEach(item => {
+            if (!item.closest('.settings-popup')) {
+                item.style.display = settingsPopup.classList.contains('show') ? 'none' : 'flex';
+            }
+        });
+    });
+    
+    // Close popup when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!settingsPopup.contains(e.target) && !settingsButton.contains(e.target)) {
+            settingsPopup.classList.remove('show');
+            // Show other menu items again
+            const menuItems = dropdownMenu.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                if (!item.closest('.settings-popup')) {
+                    item.style.display = 'flex';
+                }
+            });
+        }
+    });
+});
+</script>
+  </div>
+  <input type="text" placeholder="Discover with Oria." class="typing-input" id="searchInput" required />
+  <div class="suggestions" id="suggestionBox"></div>
+  <span class="material-symbols-rounded action-icon" id="voice-btn" title="Voice Input">mic</span>
+  <button class="material-symbols-rounded action-icon hidden" id="send-message-button">send</button>
+</div>
+<script>
+// Function to create custom alert modal
+const createAlertModal = (message) => {
+    const overlay = createOverlay();
+    const modal = createModal('alert');
+    
+    modal.innerHTML = `
+        <div style="text-align: center;">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--help-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Help Icon">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="8" x2="12" y2="12"></line>
+    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+</svg>
+
+            <p style="margin: 16px 0; font-size: 16px; color: var(--text-color);">${message}</p>
+            <button id="alertOkButton" style="
+                padding: 8px 24px;
+                border: none;
+                border-radius: 4px;
+                background: var(--help-color);
+                color: white;
+                cursor: pointer;
+                font-size: 14px;
+				float: right;">OK</button>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+    
+    // Show modal with animation
+    requestAnimationFrame(() => {
+        overlay.style.opacity = '1';
+        modal.style.opacity = '1';
+    });
+    
+    // Close function
+    const closeAlertModal = () => {
+        overlay.style.opacity = '0';
+        modal.style.opacity = '0';
+        setTimeout(() => {
+            overlay.remove();
+            modal.remove();
+        }, 300);
+    };
+    
+    // Event listeners
+    document.getElementById('alertOkButton').addEventListener('click', closeAlertModal);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeAlertModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAlertModal();
+    });
+};
+
+// Updated createEditNameModal function
+const createEditNameModal = () => {
+    const overlay = createOverlay();
+    const modal = createModal();
+    const storedName = localStorage.getItem('visitorName');
+    
+    modal.innerHTML = `
+        <h2 style="margin: 0 0 16px; font-size: 18px; font-weight: 600; color: var(--text-color);">Edit Your Name</h2>
+        <div class="input-group">
+            <input type="text" 
+                id="editNameInput" 
+                value="${storedName || ''}" 
+                placeholder="Enter new name" 
+                maxlength="10" 
+                style="width: 100%; padding: 12px; border: 2px solid var(--subheading-color); border-radius: 8px; font-size: 1rem; background: var(--secondary-color); color: var(--text-color);"
+                oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '');">
+        </div>
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+            <button id="cancelEditName" style="
+                padding: 8px 16px;
+                border: 1px solid var(--text-color);
+                border-radius: 4px;
+                background: transparent;
+                cursor: pointer;
+                color: var(--text-color);">Cancel</button>
+            <button id="confirmEditName" style="
+                padding: 8px 16px;
+                border: none;
+                border-radius: 4px;
+                background: var(--help-color);
+                color: white;
+                cursor: pointer;">Save</button>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+    
+    // Show modal with animation
+    requestAnimationFrame(() => {
+        overlay.style.opacity = '1';
+        modal.style.opacity = '1';
+    });
+    
+    // Event handlers
+    const closeModal = () => {
+        overlay.style.opacity = '0';
+        modal.style.opacity = '0';
+        setTimeout(() => {
+            overlay.remove();
+            modal.remove();
+        }, 300);
+    };
+    
+    document.getElementById('cancelEditName').addEventListener('click', closeModal);
+    
+    document.getElementById('confirmEditName').addEventListener('click', () => {
+        const newName = document.getElementById('editNameInput').value.trim();
+        if (newName) {
+            localStorage.setItem('visitorName', newName);
+            document.querySelector('.Hello-text').textContent = `Hi, ${newName}`;
+            closeModal();
+        } else {
+            createAlertModal('Please enter a valid name');
+        }
+    });
+    
+    // Close on overlay click
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+};
+
+// Add event listener for edit name button
+document.addEventListener('DOMContentLoaded', () => {
+    const editNameButton = document.getElementById('edit-name-button');
+    if (editNameButton) {
+        editNameButton.addEventListener('click', createEditNameModal);
+    }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('searchInput');
+  const voiceBtn = document.getElementById('voice-btn');
+  const sendButton = document.getElementById('send-message-button');
+
+  // Function to toggle between mic and send button
+  const toggleInputIcons = () => {
+    const hasText = searchInput.value.trim().length > 0;
+    voiceBtn.classList.toggle('hidden', hasText);
+    sendButton.classList.toggle('hidden', !hasText);
+  };
+
+  // Listen for input changes
+  searchInput.addEventListener('input', toggleInputIcons);
+
+  // Handle send button click
+  sendButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (searchInput.value.trim()) {
+      // Trigger form submission or handle message sending
+      searchInput.form.dispatchEvent(new Event('submit'));
+    }
+  });
+
+  // Clear input handler
+  const handleInputClear = () => {
+    searchInput.value = '';
+    toggleInputIcons();
+  };
+
+  // Handle form submission
+  searchInput.form.addEventListener('submit', () => {
+    setTimeout(handleInputClear, 0);
+  });
+
+  // Initialize state
+  toggleInputIcons();
+});
+</script>
+    </form>
+    <p class="disclaimer-text">
+     <span class="popu" >Oria</span> can make mistakes. Check important info. 
+    </p>
+  </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const moreButton = document.getElementById('more-button');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+
+  moreButton.addEventListener('click', function() {
+    dropdownMenu.classList.toggle('show');
+    // Change more_vert icon to close when menu is open
+    this.textContent = dropdownMenu.classList.contains('show') ? 'close' : 'more_vert';
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.act-buttons')) {
+      dropdownMenu.classList.remove('show');
+      moreButton.textContent = 'more_vert';
+    }
+  });
+});
+
+
+</script>
+
+
+  <script src="script.js"></script>
+<script src="images/sug.js"></script>
+ <script>
+// Voice recognition setup
+const searchInput = document.getElementById('searchInput');
+const voiceButton = document.getElementById('voice-btn');
+let recognition;
+const originalPlaceholder = "Discover with Oria.";
+
+// Check for various implementations of Speech Recognition
+if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window || 'mozSpeechRecognition' in window || 'msSpeechRecognition' in window) {
+    // Create speech recognition object based on available implementation
+    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+    
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    
+    // Detect user's language automatically
+    recognition.lang = navigator.language || 'en-US';
+
+    // Configure recognition
+    recognition.onstart = function() {
+        voiceButton.textContent = 'mic_off';
+        voiceButton.style.color = '#ff4444';
+        searchInput.placeholder = "Oria Listening...";
+    };
+
+    recognition.onend = function() {
+        voiceButton.textContent = 'mic';
+        voiceButton.style.color = '';
+        searchInput.placeholder = originalPlaceholder;
+    };
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        searchInput.value = transcript;
+        // Trigger input event for compatibility
+        searchInput.dispatchEvent(new Event('input'));
+    };
+
+    recognition.onerror = function(event) {
+        console.error('Speech recognition error:', event.error);
+        voiceButton.textContent = 'mic';
+        voiceButton.style.color = '';
+        searchInput.placeholder = originalPlaceholder;
+        
+        // Show user-friendly error message
+        if (event.error === 'not-allowed') {
+            alert('Please allow microphone access to use voice input.');
+        }
+    };
+
+    // Add both click and touch events for better mobile support
+    ['click', 'touchend'].forEach(eventType => {
+        voiceButton.addEventListener(eventType, function(e) {
+            e.preventDefault(); // Prevent double-firing on touch devices
+            if (recognition) {
+                try {
+                    recognition.start();
+                } catch (err) {
+                    // Handle case where recognition is already started
+                    if (err.name === 'InvalidStateError') {
+                        recognition.stop();
+                    }
+                }
+            }
+        });
+    });
+} else {
+    voiceButton.style.display = 'none';
+    console.log('Speech recognition not supported on this device/browser');
+}
+
+// Add iOS specific handling
+if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    voiceButton.addEventListener('touchstart', function(e) {
+        e.preventDefault(); // Prevent default touch behavior on iOS
+    });
+}
+
+	  </script>
+	  	<script>
+function toggleDropdown() {
+    const dropdown = document.getElementById("dropdown-menu");
+    dropdown.classList.toggle("show");
+}
+
+function updateGreetingPlaceholder() {
+    const hours = new Date().getHours();
+    
+    const greeting = 
+        hours >= 0 && hours < 5 ? "Happy Late Night" :
+        hours >= 5 && hours < 9 ? "Beautiful Morning" :
+        hours >= 9 && hours < 12 ? "Good Morning" :
+        hours >= 12 && hours < 15 ? "Good Afternoon" :
+        hours >= 15 && hours < 18 ? "Late Afternoon" :
+        hours >= 18 && hours < 21 ? "Good Evening" :
+        hours >= 21 && hours < 24 ? "Great Night" : 
+        "Hello";
+    
+    // Define possible placeholder variations
+    const placeholders = [
+        `${greeting}, Explore Oria.`,
+        `${greeting}, What’s your query?`,
+        `${greeting}, How can I assist?`,
+        `${greeting}, Let's get started!`,
+        `${greeting}, Need any help?`
+    ];
+    
+    // Randomly select a placeholder variation
+    const randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)];
+
+    // Update the placeholder of the input field
+    const inputField = document.querySelector('.typing-input');
+    inputField.placeholder = randomPlaceholder;
+}
+
+// Call the function to update the greeting
+updateGreetingPlaceholder();
+
+// Optional: Update greeting every minute
+setInterval(updateGreetingPlaceholder, 60000);
+
+
+
+
+	</script>
+	<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const profileUpload = document.getElementById('profile-upload');
+    const profileImage = document.getElementById('profile-image');
+    const profileWrapper = document.querySelector('.profile-wrapper');
+    const defaultAvatar = 'images/download.svg';
+
+    // Add touch events for mobile
+    ['touchstart', 'click'].forEach(eventType => {
+        profileWrapper.addEventListener(eventType, function(e) {
+            e.preventDefault(); // Prevent default behavior
+            e.stopPropagation(); // Stop event bubbling
+            profileUpload.click();
+        }, false);
+    });
+
+    // Prevent scroll when touching the profile wrapper
+    profileWrapper.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+    }, { passive: false });
+
+    // Handle file selection
+    profileUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please upload a valid image file (JPG, PNG, or GIF)');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Please upload an image smaller than 5MB');
+                return;
+            }
+
+            // Create FileReader for image preview
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                // Update image preview
+                profileImage.src = event.target.result;
+                profileWrapper.classList.remove('default-avatar');
+                profileWrapper.classList.add('verified');
+
+                // Save to localStorage with error handling
+                try {
+                    localStorage.setItem('userProfileImage', event.target.result);
+                } catch (e) {
+                    if (e.name === 'QuotaExceededError') {
+                        alert('Storage quota exceeded. Please choose a smaller image.');
+                        profileImage.src = localStorage.getItem('userProfileImage') || defaultAvatar;
+                    }
+                }
+            };
+
+            // Handle reading errors
+            reader.onerror = function() {
+                alert('Error reading file. Please try again.');
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Load saved profile image on page load
+    const savedImage = localStorage.getItem('userProfileImage');
+    if (savedImage) {
+        profileImage.src = savedImage;
+        profileWrapper.classList.remove('default-avatar');
+        profileWrapper.classList.add('verified');
+    } else {
+        profileImage.src = defaultAvatar;
+        profileWrapper.classList.add('default-avatar');
+    }
+});
+
+</script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Oria - Your AI Assistant by Clory",
+    "description": "Oria is an advanced AI assistant created by Clory and its sub-studio, Midnight Studio.",
+    "author": {
+        "@type": "Person",
+        "name": "Bappi"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Clory",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://clory.netlify.app/images/bl.svg"
+        },
+        "subOrganization": {
+            "@type": "Organization",
+            "name": "Midnight Studio"
+        },
+        "url": "https://clory.netlify.app/"
+    },
+    "datePublished": "2024-12-15",
+    "dateModified": "2024-12-15",
+    "mainEntityOfPage": "https://clory-oria.netlify.app/",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://clory-oria.netlify.app/images/pp.svg",
+        "height": "1200",
+        "width": "1200"
+    },
+    "keywords": "Oria, AI assistant, Clory, AI technology, artificial intelligence, virtual assistant, AI tools, Clory AI, Midnight Studio, productivity assistant, web design assistant, AI for business, advanced AI assistant, personal assistant AI, AI support, Clory AI assistant"
+}
+</script>
+
+</body>
+</html>

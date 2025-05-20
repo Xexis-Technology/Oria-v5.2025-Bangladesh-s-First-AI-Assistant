@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy | Oria AI Assistant</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@32,400,0,0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    .privacy-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .privacy-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    
+    .privacy-logo {
+      width: 60px;
+      height: 45px;
+    }
+    
+    .privacy-title {
+      font-size: 20px;
+      margin: 0;
+      color: var(--text-color);
+    }
+    
+    .privacy-subtitle {
+      color: var(--subheading-color);
+      margin: 8px 0 0 0;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .privacy-intro {
+      background: #1d7efd;
+      color: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .privacy-intro p {
+      margin: 0;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .privacy-date {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+    
+    .privacy-section {
+      background: var(--secondary-color);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .privacy-section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .privacy-section h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #1d7efd;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .privacy-section h2 span {
+      background: #1d7efd;
+      color: white;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    
+    .privacy-section p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      color: var(--text-color);
+    }
+    
+    .privacy-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .privacy-section li {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-color);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    
+    .privacy-section li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #1d7efd;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    
+    .privacy-section li:last-child {
+      margin-bottom: 0;
+    }
+    
+    .back-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1d7efd;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-color);
+      transition: background 0.2s ease;
+    }
+    
+    .back-button:hover {
+      background: var(--secondary-hover-color);
+    }
+  </style>
+</head>
+<body>
+  <button class="back-button" onclick="history.back()">
+    <span class="material-symbols-rounded">arrow_back</span>
+  </button>
+  
+  <div class="privacy-container">
+    <div class="privacy-header">
+      <img src="oria.png" alt="Oria" class="privacy-logo">
+      <div>
+        <h1 class="privacy-title">Privacy Policy</h1>
+        <p class="privacy-subtitle">Your privacy is our top priority. Learn how we protect and manage your data.</p>
+      </div>
+    </div>
+
+    <div class="privacy-intro">
+      <p>This Privacy Policy explains how Oria AI Assistant ("we", "our", or "us") collects, uses, and protects your personal information. By using our service, you trust us with your information, and we are committed to maintaining that trust. Please read this policy carefully to understand our practices regarding your data.</p>
+      <span class="privacy-date">Last updated: March 2025</span>
+    </div>
+    
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">security</span>Data Collection</h2>
+      <p>We collect and store the following information to provide and improve our services:</p>
+      <ul>
+        <li>Account information (username and email) - Required for account creation and service personalization</li>
+        <li>Chat history (stored locally on your device) - To provide conversation continuity and improve user experience</li>
+        <li>Usage statistics (anonymized) - For service improvement and feature optimization</li>
+        <li>Device information - To optimize performance and ensure compatibility</li>
+        <li>Feedback and support requests - To assist you and improve our services</li>
+        <li>Technical logs - For security and troubleshooting purposes</li>
+        <li>Cookies and local storage data - For maintaining your preferences and session information</li>
+      </ul>
+    </div>
+    
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">lock</span>Data Security</h2>
+      <p>Your privacy and data security are our top priorities. We implement the following comprehensive security measures:</p>
+      <ul>
+        <li>End-to-end encryption for all communications using industry-standard protocols</li>
+        <li>Local storage of sensitive information with secure encryption</li>
+        <li>Regular security audits and vulnerability assessments</li>
+        <li>Secure data transmission using SSL/TLS encryption</li>
+        <li>Limited data retention periods with automatic deletion</li>
+        <li>Access controls and authentication mechanisms</li>
+        <li>Regular security updates and patch management</li>
+        <li>Employee training on data protection and security best practices</li>
+      </ul>
+    </div>
+    
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">share</span>Data Sharing</h2>
+      <p>We maintain strict controls over your personal information and do not share it with third parties, except in the following limited circumstances:</p>
+      <ul>
+        <li>When required by law or legal process</li>
+        <li>To protect our rights, privacy, safety, or property</li>
+        <li>With your explicit consent and authorization</li>
+        <li>For essential service operations with trusted partners</li>
+        <li>In the event of a merger, acquisition, or business transfer</li>
+        <li>To prevent fraud or ensure platform safety</li>
+        <li>With service providers under strict confidentiality agreements</li>
+      </ul>
+    </div>
+    
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">cookie</span>Cookies & Storage</h2>
+      <p>We use local storage and cookies for the following purposes:</p>
+      <ul>
+        <li>Remember your preferences and settings</li>
+        <li>Maintain chat history locally for better user experience</li>
+        <li>Improve service performance and reliability</li>
+        <li>Store theme settings and customizations</li>
+        <li>Keep you logged in securely</li>
+        <li>Analyze usage patterns for service improvement</li>
+        <li>Enable essential features and functionality</li>
+        <li>Provide personalized content and suggestions</li>
+      </ul>
+      <p>You can control cookie settings through your browser preferences, but this may affect some features.</p>
+    </div>
+    
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">person</span>Your Rights</h2>
+      <p>Under applicable data protection laws, you have the following rights:</p>
+      <ul>
+        <li>Access your personal data and request copies</li>
+        <li>Delete your account and associated data</li>
+        <li>Export your chat history and information</li>
+        <li>Modify your preferences and personal information</li>
+        <li>Opt-out of non-essential data collection</li>
+        <li>Request correction of inaccurate data</li>
+        <li>Withdraw consent for data processing</li>
+        <li>Lodge complaints with relevant authorities</li>
+        <li>Request data portability</li>
+        <li>Object to certain data processing activities</li>
+      </ul>
+    </div>
+    
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">child_care</span>Children's Privacy</h2>
+      <p>We take special precautions to protect children's privacy:</p>
+      <ul>
+        <li>Our service is not intended for users under 13 years of age</li>
+        <li>We do not knowingly collect data from children</li>
+        <li>Parents can request removal of children's data</li>
+        <li>Age verification is required for account creation</li>
+        <li>Special protections for users aged 13-18</li>
+      </ul>
+    </div>
+    
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">update</span>Policy Updates</h2>
+      <p>This privacy policy may be updated periodically. We will notify you of significant changes through:</p>
+      <ul>
+        <li>In-app notifications with change summaries</li>
+        <li>Email notifications to registered users</li>
+        <li>Website announcements and updates</li>
+        <li>Terms of service update notifications</li>
+        <li>30-day advance notice for material changes</li>
+        <li>Archive of previous policy versions</li>
+      </ul>
+      <p>Continued use of our service after changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">contact_support</span>Contact Us</h2>
+      <p>If you have questions about this privacy policy or your data:</p>
+      <ul>
+        <li>Email us at tunetor22@gmail.com</li>
+        <li>Use the in-app feedback form</li>
+        <li>Visit our Help Center</li>
+        <li>Contact our Data Protection Officer</li>
+        <li>Response time: within 48 hours</li>
+      </ul>
+    </div>
+
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">draw</span>Tools & Ideas Data</h2>
+      <p>How we handle data in the Tools and Ideas feature:</p>
+      <ul>
+        <li>Ideas and notes are stored locally in your browser's storage</li>
+        <li>We do not collect or store your ideas on our servers</li>
+        <li>Tags and categories are saved locally with your ideas</li>
+        <li>Sharing functionality uses standard sharing APIs of your device</li>
+        <li>Deleted ideas are permanently removed from local storage</li>
+        <li>We recommend not storing sensitive personal information in ideas</li>
+        <li>Backup and export features are provided for data portability</li>
+        <li>Local storage can be cleared through your browser settings</li>
+      </ul>
+    </div>
+
+    <div class="privacy-section">
+      <h2><span class="material-symbols-rounded">explore</span>Discover Data Usage</h2>
+      <p>Information about data handling in the Discover section:</p>
+      <ul>
+        <li>Usage patterns may be analyzed to improve content recommendations</li>
+        <li>Interaction data is anonymized for analytics purposes</li>
+        <li>Content preferences may be stored locally for personalization</li>
+        <li>Third-party content links are clearly marked</li>
+        <li>External website visits are not tracked by our service</li>
+        <li>Search queries in discover are not stored permanently</li>
+        <li>Content filters and preferences are saved locally</li>
+        <li>Cache data may be stored to improve loading performance</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const isLightTheme = localStorage.getItem("themeColor") === "light_mode";
+      document.body.classList.toggle("light-theme", isLightTheme);
+      
+      const logo = document.querySelector('.privacy-logo');
+      if (logo) {
+        logo.src = isLightTheme ? "oria1.png" : "oria.png";
+      }
+    });
+  </script>
+</body>
+</html> 
