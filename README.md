@@ -4,9 +4,11 @@
 <p>
   <img src="https://oria-mobile.netlify.app/image/cb.png" alt="Oria Logo" width="100"/>
 </p>
+
 ## 🌐 Website (ORIA AI v11.2024)
 
 🔗 [ORIA AI Website](https://clory-oria.netlify.app/)
+
 ## 📱 Android App (ORIA AI v5.2025)
 
 🔗 [ORIA AI Android APK Download](https://median.co/share/qzxjdp#apk)
