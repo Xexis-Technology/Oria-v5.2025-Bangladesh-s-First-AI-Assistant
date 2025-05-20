@@ -4,8 +4,8 @@
 <p>
   <img src="https://oria-mobile.netlify.app/image/cb.png" alt="Oria Logo" width="100"/>
 </p>
-[ORIA AI v11.2024 website](https://clory-oria.netlify.app/)
-[ORIA AI v5.2025 mobile android app](https://median.co/share/qzxjdp#apk)
+#- [ORIA AI v11.2024 website](https://clory-oria.netlify.app/)
+#- [ORIA AI v5.2025 mobile android app](https://median.co/share/qzxjdp#apk)
 
 
 A fully responsive, mobile-first AI chat application powered by the Gemini API.
